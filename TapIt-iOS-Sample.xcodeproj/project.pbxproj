@@ -21,7 +21,7 @@
 		5594984415366E4200D6495D /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594984315366E4200D6495D /* SecondViewController.m */; };
 		5594984615366E4200D6495D /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 5594984515366E4200D6495D /* second.png */; };
 		5594984815366E4200D6495D /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5594984715366E4200D6495D /* second@2x.png */; };
-		5594985215366F9300D6495D /* TapItBannerAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594985115366F9300D6495D /* TapItBannerAd.m */; };
+		5594985215366F9300D6495D /* TapItAdBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594985115366F9300D6495D /* TapItAdBannerView.m */; };
 		55949856153670D900D6495D /* TapItInterstitialAd.m in Sources */ = {isa = PBXBuildFile; fileRef = 55949855153670D900D6495D /* TapItInterstitialAd.m */; };
 		55949863153671A600D6495D /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 55949862153671A600D6495D /* OpenUDID.m */; };
 		55949866153672A200D6495D /* TapItAppTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 55949865153672A200D6495D /* TapItAppTracker.m */; };
@@ -31,6 +31,9 @@
 		5594987C1536937800D6495D /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498741536937800D6495D /* SBJsonBase.m */; };
 		5594987D1536937800D6495D /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498761536937800D6495D /* SBJsonParser.m */; };
 		5594987E1536937800D6495D /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498781536937800D6495D /* SBJsonWriter.m */; };
+		55949880153695C500D6495D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594987F153695C400D6495D /* iAd.framework */; };
+		559498871536A2E500D6495D /* TapItRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498861536A2E500D6495D /* TapItRequest.m */; };
+		5594988F1536A36100D6495D /* TapItAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594988D1536A35F00D6495D /* TapItAdView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,16 +57,15 @@
 		5594984315366E4200D6495D /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		5594984515366E4200D6495D /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		5594984715366E4200D6495D /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
-		5594985115366F9300D6495D /* TapItBannerAd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItBannerAd.m; path = TapItSDK/TapItBannerAd.m; sourceTree = "<group>"; };
+		5594985115366F9300D6495D /* TapItAdBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdBannerView.m; path = TapItSDK/TapItAdBannerView.m; sourceTree = "<group>"; };
 		559498531536705200D6495D /* TapIt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TapIt.h; path = TapItSDK/Headers/TapIt.h; sourceTree = "<group>"; };
 		55949855153670D900D6495D /* TapItInterstitialAd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItInterstitialAd.m; path = TapItSDK/TapItInterstitialAd.m; sourceTree = "<group>"; };
 		55949861153671A600D6495D /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
 		55949862153671A600D6495D /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
 		55949865153672A200D6495D /* TapItAppTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAppTracker.m; path = TapItSDK/TapItAppTracker.m; sourceTree = "<group>"; };
 		559498671536751400D6495D /* TapItAppTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAppTracker.h; path = TapItSDK/Headers/TapItAppTracker.h; sourceTree = "<group>"; };
-		559498681536751400D6495D /* TapItBannerAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItBannerAd.h; path = TapItSDK/Headers/TapItBannerAd.h; sourceTree = "<group>"; };
+		559498681536751400D6495D /* TapItAdBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBannerView.h; path = TapItSDK/Headers/TapItAdBannerView.h; sourceTree = "<group>"; };
 		559498691536751400D6495D /* TapItInterstitialAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItInterstitialAd.h; path = TapItSDK/Headers/TapItInterstitialAd.h; sourceTree = "<group>"; };
-		5594986A1536772700D6495D /* TapItPrivateConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TapItPrivateConstants.h; sourceTree = "<group>"; };
 		5594986C1536937800D6495D /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		5594986D1536937800D6495D /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		5594986E1536937800D6495D /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -77,6 +79,13 @@
 		559498761536937800D6495D /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		559498771536937800D6495D /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		559498781536937800D6495D /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		5594987F153695C400D6495D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		559498851536A2E500D6495D /* TapItRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItRequest.h; path = TapItSDK/TapItRequest.h; sourceTree = "<group>"; };
+		559498861536A2E500D6495D /* TapItRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItRequest.m; path = TapItSDK/TapItRequest.m; sourceTree = "<group>"; };
+		5594988C1536A35F00D6495D /* TapItAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdView.h; path = TapItSDK/TapItAdView.h; sourceTree = "<group>"; };
+		5594988D1536A35F00D6495D /* TapItAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdView.m; path = TapItSDK/TapItAdView.m; sourceTree = "<group>"; };
+		5594988E1536A36000D6495D /* TapItPrivateConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItPrivateConstants.h; path = TapItSDK/TapItPrivateConstants.h; sourceTree = "<group>"; };
+		559498901536A36F00D6495D /* TapItAdBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBannerViewDelegate.h; path = TapItSDK/Headers/TapItAdBannerViewDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55949880153695C500D6495D /* iAd.framework in Frameworks */,
 				5594982415366E4100D6495D /* UIKit.framework in Frameworks */,
 				5594982615366E4100D6495D /* Foundation.framework in Frameworks */,
 				5594982815366E4100D6495D /* CoreGraphics.framework in Frameworks */,
@@ -115,6 +125,7 @@
 		5594982215366E4100D6495D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5594987F153695C400D6495D /* iAd.framework */,
 				5594982315366E4100D6495D /* UIKit.framework */,
 				5594982515366E4100D6495D /* Foundation.framework */,
 				5594982715366E4100D6495D /* CoreGraphics.framework */,
@@ -157,10 +168,14 @@
 			isa = PBXGroup;
 			children = (
 				5594984F15366E5500D6495D /* Headers */,
-				5594985115366F9300D6495D /* TapItBannerAd.m */,
+				5594988C1536A35F00D6495D /* TapItAdView.h */,
+				5594988D1536A35F00D6495D /* TapItAdView.m */,
+				5594988E1536A36000D6495D /* TapItPrivateConstants.h */,
+				5594985115366F9300D6495D /* TapItAdBannerView.m */,
 				55949855153670D900D6495D /* TapItInterstitialAd.m */,
 				55949865153672A200D6495D /* TapItAppTracker.m */,
-				5594986A1536772700D6495D /* TapItPrivateConstants.h */,
+				559498851536A2E500D6495D /* TapItRequest.h */,
+				559498861536A2E500D6495D /* TapItRequest.m */,
 			);
 			name = TapItSDK;
 			sourceTree = "<group>";
@@ -168,8 +183,9 @@
 		5594984F15366E5500D6495D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				559498901536A36F00D6495D /* TapItAdBannerViewDelegate.h */,
 				559498671536751400D6495D /* TapItAppTracker.h */,
-				559498681536751400D6495D /* TapItBannerAd.h */,
+				559498681536751400D6495D /* TapItAdBannerView.h */,
 				559498691536751400D6495D /* TapItInterstitialAd.h */,
 				559498531536705200D6495D /* TapIt.h */,
 			);
@@ -285,7 +301,7 @@
 				5594983415366E4100D6495D /* AppDelegate.m in Sources */,
 				5594983D15366E4200D6495D /* FirstViewController.m in Sources */,
 				5594984415366E4200D6495D /* SecondViewController.m in Sources */,
-				5594985215366F9300D6495D /* TapItBannerAd.m in Sources */,
+				5594985215366F9300D6495D /* TapItAdBannerView.m in Sources */,
 				55949856153670D900D6495D /* TapItInterstitialAd.m in Sources */,
 				55949863153671A600D6495D /* OpenUDID.m in Sources */,
 				55949866153672A200D6495D /* TapItAppTracker.m in Sources */,
@@ -295,6 +311,8 @@
 				5594987C1536937800D6495D /* SBJsonBase.m in Sources */,
 				5594987D1536937800D6495D /* SBJsonParser.m in Sources */,
 				5594987E1536937800D6495D /* SBJsonWriter.m in Sources */,
+				559498871536A2E500D6495D /* TapItRequest.m in Sources */,
+				5594988F1536A36100D6495D /* TapItAdView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,11 +15,14 @@
 
 @implementation FirstViewController
 
+- (void)viewWillAppear:(BOOL)animated {
+//    [tapitAd setHidden:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    tapitAd = [[TapItBannerAd alloc] init];
 }
 
 - (void)viewDidUnload

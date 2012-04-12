@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  TapItRequest.h
 //  TapIt-iOS-Sample
 //
 //  Created by Nick Penteado on 4/11/12.
@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class TapItAdBannerView;
+@interface TapItRequest : NSObject
 
-@interface FirstViewController : UIViewController {
-    IBOutlet TapItAdBannerView *tapitAd;
-}
 @end

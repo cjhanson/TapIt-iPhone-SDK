@@ -10,7 +10,7 @@
 #import "TapItAppTracker.h"
 #import "OpenUDID.h"
 
-@interface TapItAppTracker (Private)
+@interface TapItAppTracker ()
     - (void)reportApplicationOpenInBackground;
 @end
 
