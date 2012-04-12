@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TapItAppTracker.h"
 
 @implementation AppDelegate
 
@@ -20,7 +21,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [[TapItAppTracker sharedAppTracker] reportApplicationOpen];
+
     return YES;
 }
 							

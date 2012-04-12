@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  TapItAppTracker.h
 //  TapIt-iOS-Sample
 //
 //  Created by Nick Penteado on 4/11/12.
@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class TapItBannerAd;
+@interface TapItAppTracker : NSObject
 
-@interface FirstViewController : UIViewController {
-    TapItBannerAd *tapitAd;
-}
++ (TapItAppTracker *)sharedAppTracker;
+
+- (NSString *)deviceUDID;
+- (void)reportApplicationOpen;
+
 @end
