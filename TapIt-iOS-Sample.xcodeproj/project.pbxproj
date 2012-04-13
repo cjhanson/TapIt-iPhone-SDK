@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55202BFC1537A04A00B2244E /* TapItAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202BFB1537A04A00B2244E /* TapItAdManager.m */; };
+		55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */; };
+		552E9A6B1537F39A00FD22C4 /* TapItAdBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */; };
 		5594982415366E4100D6495D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982315366E4100D6495D /* UIKit.framework */; };
 		5594982615366E4100D6495D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982515366E4100D6495D /* Foundation.framework */; };
 		5594982815366E4100D6495D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982715366E4100D6495D /* CoreGraphics.framework */; };
@@ -34,9 +37,18 @@
 		55949880153695C500D6495D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594987F153695C400D6495D /* iAd.framework */; };
 		559498871536A2E500D6495D /* TapItRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498861536A2E500D6495D /* TapItRequest.m */; };
 		5594988F1536A36100D6495D /* TapItAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594988D1536A35F00D6495D /* TapItAdView.m */; };
+		55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */; };
+		55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A64B5C1537E7F200AFDDFF /* JSONKit.m */; };
+		55A64B601537E7F200AFDDFF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5D1537E7F200AFDDFF /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55202BFA1537A04A00B2244E /* TapItAdManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdManager.h; path = TapItSDK/TapItAdManager.h; sourceTree = "<group>"; };
+		55202BFB1537A04A00B2244E /* TapItAdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdManager.m; path = TapItSDK/TapItAdManager.m; sourceTree = "<group>"; };
+		55202C011537C59C00B2244E /* NSDictionary+QueryStringBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+QueryStringBuilder.h"; sourceTree = "<group>"; };
+		55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryStringBuilder.m"; sourceTree = "<group>"; };
+		552E9A691537F39A00FD22C4 /* TapItAdBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBase.h; path = TapItSDK/TapItAdBase.h; sourceTree = "<group>"; };
+		552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdBase.m; path = TapItSDK/TapItAdBase.m; sourceTree = "<group>"; };
 		5594981F15366E4100D6495D /* TapIt-iOS-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TapIt-iOS-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5594982315366E4100D6495D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5594982515366E4100D6495D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -86,6 +98,10 @@
 		5594988D1536A35F00D6495D /* TapItAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdView.m; path = TapItSDK/TapItAdView.m; sourceTree = "<group>"; };
 		5594988E1536A36000D6495D /* TapItPrivateConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItPrivateConstants.h; path = TapItSDK/TapItPrivateConstants.h; sourceTree = "<group>"; };
 		559498901536A36F00D6495D /* TapItAdBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBannerViewDelegate.h; path = TapItSDK/Headers/TapItAdBannerViewDelegate.h; sourceTree = "<group>"; };
+		55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
+		55A64B5B1537E7F200AFDDFF /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		55A64B5C1537E7F200AFDDFF /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		55A64B5D1537E7F200AFDDFF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +192,10 @@
 				55949865153672A200D6495D /* TapItAppTracker.m */,
 				559498851536A2E500D6495D /* TapItRequest.h */,
 				559498861536A2E500D6495D /* TapItRequest.m */,
+				55202BFA1537A04A00B2244E /* TapItAdManager.h */,
+				55202BFB1537A04A00B2244E /* TapItAdManager.m */,
+				552E9A691537F39A00FD22C4 /* TapItAdBase.h */,
+				552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */,
 			);
 			name = TapItSDK;
 			sourceTree = "<group>";
@@ -195,6 +215,9 @@
 		5594985F153671A600D6495D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				55A64B591537E7F200AFDDFF /* JSONKit */,
+				55202C011537C59C00B2244E /* NSDictionary+QueryStringBuilder.h */,
+				55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */,
 				5594986B1536937800D6495D /* JSON */,
 				55949860153671A600D6495D /* OpenUDID */,
 			);
@@ -228,6 +251,17 @@
 				559498781536937800D6495D /* SBJsonWriter.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		55A64B591537E7F200AFDDFF /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */,
+				55A64B5B1537E7F200AFDDFF /* JSONKit.h */,
+				55A64B5C1537E7F200AFDDFF /* JSONKit.m */,
+				55A64B5D1537E7F200AFDDFF /* README.md */,
+			);
+			path = JSONKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +321,8 @@
 				5594984115366E4200D6495D /* first@2x.png in Resources */,
 				5594984615366E4200D6495D /* second.png in Resources */,
 				5594984815366E4200D6495D /* second@2x.png in Resources */,
+				55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */,
+				55A64B601537E7F200AFDDFF /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +349,10 @@
 				5594987E1536937800D6495D /* SBJsonWriter.m in Sources */,
 				559498871536A2E500D6495D /* TapItRequest.m in Sources */,
 				5594988F1536A36100D6495D /* TapItAdView.m in Sources */,
+				55202BFC1537A04A00B2244E /* TapItAdManager.m in Sources */,
+				55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */,
+				55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */,
+				552E9A6B1537F39A00FD22C4 /* TapItAdBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +474,7 @@
 				5594984D15366E4200D6495D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

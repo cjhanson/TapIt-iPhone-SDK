@@ -31,10 +31,31 @@
     return [OpenUDID value];
 }
 
+- (NSString *)userAgent {
+	static NSString *userAgent = nil;
+	
+    if (!userAgent) {
+        UIWebView *webview = [[UIWebView alloc] init];
+        userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];  
+        [webview release];
+    }
+    return userAgent;
+}
+
 - (void)reportApplicationOpen {
     [self performSelectorInBackground:@selector(reportApplicationOpenInBackground) withObject:nil];
     
 }
+
+- (CLLocation *)location {
+    return nil;
+}
+
+- (int)networkConnectionType {
+    // cell, 4g, wifi, etc...
+    return 0;
+}
+
 
 - (void)reportApplicationOpenInBackground {
     @autoreleasepool {

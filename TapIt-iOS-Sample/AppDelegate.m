@@ -21,8 +21,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[TapItAppTracker sharedAppTracker] reportApplicationOpen];
-
+    TapItAppTracker *appTracker = [TapItAppTracker sharedAppTracker];
+    [appTracker reportApplicationOpen];
+    
     return YES;
 }
 							

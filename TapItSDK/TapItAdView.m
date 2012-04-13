@@ -9,12 +9,14 @@
 #import "TapItAdView.h"
 
 @implementation TapItAdView
+
+@synthesize tapitRequest;
+
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         NSLog(@"TapItAdView initing...");
-        self.delegate = self;
         [self setScrollable:NO];
-        [self loadHTMLString:@"<a href=\"http://www.tapit.com/\"><img src=\"http://www.google.com/images/srpr/logo3w.png\" width=\"100\" /></a>"];
+//        [self loadHTMLString:@"<a href=\"http://www.tapit.com/\"><img src=\"http://www.google.com/images/srpr/logo3w.png\" width=\"100\" /></a>"];
     }
     return self;
 }
@@ -47,6 +49,7 @@
 - (void)loadHTMLString:(NSString *)data {
     NSString *width = @"width:320px; margin:0 auto; text-align:center";
     NSString *htmlData = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">body {margin:0; padding:0;}</style></head><body><div style=\"%@\">%@</div></body></html>", width, data];
+    NSLog(@"Loading this html: %@", htmlData);
     [super loadHTMLString:htmlData baseURL:nil];
     //        NSString *urlString = @"http://google.com";
     //        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];

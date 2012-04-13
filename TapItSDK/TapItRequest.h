@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TapItRequest : NSObject
+@interface TapItRequest : NSURLRequest
+
+@property (copy, nonatomic) NSDictionary *parameters;
+@property (retain, nonatomic) NSString *rawResults;
+
++ (TapItRequest *)requestWithParams:(NSDictionary *)theParams;
 
 @end

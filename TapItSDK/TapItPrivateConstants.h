@@ -11,8 +11,7 @@
 
 
 #define TAPIT_AD_SERVER_URL         @"http://r.tapit.com/adrequest.php"
-//#define TAPIT_REPORTING_SERVER_URL  @"http://a.tapit.com"
-#define TAPIT_REPORTING_SERVER_URL  @"http://devsmarts.net"
+#define TAPIT_REPORTING_SERVER_URL  @"http://a.tapit.com"
 
 
 #endif

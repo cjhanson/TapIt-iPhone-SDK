@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface TapItAppTracker : NSObject
 
 + (TapItAppTracker *)sharedAppTracker;
 
 - (NSString *)deviceUDID;
+- (NSString *)userAgent;
+- (CLLocation *)location;
+
 - (void)reportApplicationOpen;
 
 @end
