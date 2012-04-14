@@ -7,19 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TapItAdManagerDelegate.h"
+#import "TapItAdDelegate.h"
+#import "TapItConstants.h"
 
 @class TapItRequest;
-
-enum {
-    TapItBannerAdType = 0x01,
-    TapItFullscreenAdType = 0x02,
-    TapItVideoAdType = 0x04
-};
-typedef NSUInteger TapItAdType;
 
 @interface TapItAdView : UIWebView <UIWebViewDelegate>
 
 @property (retain, nonatomic) TapItRequest *tapitRequest;
+@property (assign, nonatomic) id<TapItAdDelegate> tapitDelegate;
+@property (assign, nonatomic) BOOL isLoaded;
 
 - (void)setScrollable:(BOOL)scrollable;
 - (void)loadHTMLString:(NSString *)string;

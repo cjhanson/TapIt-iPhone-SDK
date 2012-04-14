@@ -10,13 +10,14 @@
 
 @implementation TapItAdView
 
-@synthesize tapitRequest;
+@synthesize tapitRequest, tapitDelegate, isLoaded;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         NSLog(@"TapItAdView initing...");
         [self setScrollable:NO];
-//        [self loadHTMLString:@"<a href=\"http://www.tapit.com/\"><img src=\"http://www.google.com/images/srpr/logo3w.png\" width=\"100\" /></a>"];
+        self.delegate = self; // UIWebViewDelegate
+        self.isLoaded = NO;
     }
     return self;
 }
@@ -49,7 +50,7 @@
 - (void)loadHTMLString:(NSString *)data {
     NSString *width = @"width:320px; margin:0 auto; text-align:center";
     NSString *htmlData = [NSString stringWithFormat:@"<html><head><style type=\"text/css\">body {margin:0; padding:0;}</style></head><body><div style=\"%@\">%@</div></body></html>", width, data];
-    NSLog(@"Loading this html: %@", htmlData);
+//    NSLog(@"Loading this html: %@", htmlData);
     [super loadHTMLString:htmlData baseURL:nil];
     //        NSString *urlString = @"http://google.com";
     //        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
@@ -57,18 +58,48 @@
 
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    
+}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"webViewDidFinishLoad");
-    //TODO: call delegate fn
-//    if ([self.delegate respondsToSelector:@selector(adDidLoad:)]) {
-//        [self.delegate adDidLoad:self];
-//    }
-
+    self.isLoaded = YES;
+    NSLog(@"adManager: webViewDidFinishLoad");
+    
+    if ([self.tapitDelegate respondsToSelector:@selector(didReceiveAd:)]) {
+        [self.tapitDelegate didReceiveAd:webView];
+    }
+    else {
+        NSLog(@"Delegate doesn't respond to managerHasAdForDisplay:adType:");
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"webView:didFailLoadWithError:");
     //TODO: call delegate fn
 }
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (!self.isLoaded) {
+        // first time loading, let the ad load
+        return YES;
+    }
+    else {
+        BOOL shouldOpen = NO;
+        if ([self.tapitDelegate respondsToSelector:@selector(adShouldOpen:withUrl:)]) {
+            // somewhere down the responder chain, we'll find someone that handles loading the ad in a TapItAdBrowserController...
+            // if not, just let load in the tiny ad view box...
+            shouldOpen = [self.tapitDelegate adShouldOpen:webView withUrl:[request URL]]; // the ad may have already been loaded by now...
+        }
+        
+        return shouldOpen;
+    }
+}
+
+- (void)dealloc {
+    [tapitRequest release], tapitRequest = nil;
+    
+    [super dealloc];
+}
+
 @end

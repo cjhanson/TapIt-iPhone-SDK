@@ -8,6 +8,9 @@
 
 #import "TapItAdBase.h"
 #import "TapItAppTracker.h"
+#import "TapItAdView.h"
+#import "TapItAdManager.h"
+#import "TapItAdBrowserController.h"
 
 @interface TapItAdBase() {
     CGRect originalFrame;
@@ -19,14 +22,15 @@
 
 - (void)baseCommonInit;
 - (void)setDefaultParams;
-- (BOOL)requestAds;
+- (BOOL)requestAdsForZone:(NSString *)zone;
 - (void)cancelAds;
+- (void)openURLInFullscreenBrowser:(NSURL *)url;
 
 @end
 
 @implementation TapItAdBase
 
-@synthesize adZone, adView, adManager;
+@synthesize adZone, adView, adManager, delegate;
 
 - (void)baseCommonInit {
     NSLog(@"super commonInt");
@@ -92,15 +96,15 @@
 
 
 
-- (BOOL)requestAds {
+- (BOOL)requestAdsForZone:(NSString *)zone {
     // Tell adManager to start fetching ads
-    if (![self customParameterForKey:@"zone"]) {
+    if (!zone) {
         NSLog(@"can't request ads, zone isn't set!");
         //TODO there must be a better way to handle this...
         return NO;
     }
-    //FIXME get rid of hard coded test code!
-    //    [customParameters setValue:@"test" forKey:@"mode"];
+    
+    [self setCustomParameterString:zone forKey:@"zone"];
     [self setDefaultParams];
     [adManager requestBannerAdWithParams:customParameters];
     return YES;
@@ -111,13 +115,82 @@
     [adManager cancelAdRequests];
 }
 
-- (void)managerHasAdForDisplay:(TapItAdView *)theAd adType:(TapItAdType)type {
-    // show the ad!
-    NSLog(@"Got an ad! hook it up and display it!");
-    self.adView = theAd;
-    [self.adView setFrame:CGRectMake(0, 0, 320, 50)]; //FIXME get rid of hard coded size!
-    [self addSubview:adView];
+
+
+
+
+
+- (void)willReceiveAd:(id)sender {
+    if ([delegate respondsToSelector:@selector(willReceiveAd:)]) {
+        [delegate willReceiveAd:self]; // yes self, don't use sender it's an internal object
+    }
 }
+
+- (void)didReceiveAd:(id)sender {
+    // This method should be overridden by child class
+}
+
+- (void)didFailToReceiveAd:(id)sender withError:(NSError*)error {
+    if ([delegate respondsToSelector:@selector(didFailToReceiveAd:withError:)]) {
+        [delegate didFailToReceiveAd:self withError:error]; // yes self, don't use sender it's an internal object
+    }
+}
+
+- (void)adWillStartFullScreen:(id)sender {
+    if ([delegate respondsToSelector:@selector(adWillStartFullScreen:)]) {
+        [delegate adWillStartFullScreen:self]; // yes self, don't use sender it's an internal object
+    }
+}
+
+- (void)adDidEndFullScreen:(id)sender {
+    if ([delegate respondsToSelector:@selector(adDidEndFullScreen:)]) {
+        [delegate adDidEndFullScreen:self]; // yes self, don't use sender it's an internal object
+    }
+}
+
+- (void)openURLInFullscreenBrowser:(NSURL *)url {
+    // Present ad browser.
+    TapItAdBrowserController *browserController = [[TapItAdBrowserController alloc] initWithURL:url delegate:self];
+    [(UIViewController *)self.delegate presentModalViewController:browserController animated:YES]; //TODO is this cast safe?
+    [browserController release];
+}
+
+//- (BOOL)adShouldOpen:(id)sender withUrl:(NSURL*)url {
+//    BOOL shouldOpen = YES;
+//    
+//    if ([delegate respondsToSelector:@selector(adShouldOpen:withUrl:)]) {
+//        shouldOpen = [delegate adShouldOpen:self withUrl:url]; // yes self, don't use sender it's an internal object
+//    }
+//    
+//    if (shouldOpen) {
+//    }
+//    
+//    // we don't care at this point...
+//    return shouldOpen;
+//}
+
+- (void)dismissBrowserController:(TapItAdBrowserController *)browserController {
+    [self dismissBrowserController:browserController animated:YES];
+}
+
+- (void)dismissBrowserController:(TapItAdBrowserController *)browserController animated:(BOOL)animated {
+    //	_adActionInProgress = NO;
+	[(UIViewController *)self.delegate dismissModalViewControllerAnimated:YES];
+	
+    //	if ([self.adView.delegate respondsToSelector:@selector(didDismissModalViewForAd:)])
+    //		[self.adView.delegate didDismissModalViewForAd:self.adView];
+    //	
+    //	if (_autorefreshTimerNeedsScheduling)
+    //	{
+    //		[self.autorefreshTimer scheduleNow];
+    //		_autorefreshTimerNeedsScheduling = NO;
+    //	}
+    //	else if ([self.autorefreshTimer isScheduled]) [self.autorefreshTimer resume];
+}
+
+
+
+
 
 - (void)dealloc {
     [adManager cancelAdRequests];

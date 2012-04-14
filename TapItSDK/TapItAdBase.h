@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TapItAdManager.h"
+#import "TapItAdDelegate.h"
+#import "TapItAdBrowserController.h"
 
-@interface TapItAdBase : UIView  <TapItAdManagerDelegate>
+@interface TapItAdBase : UIView  <TapItAdDelegate, TapItAdBrowserControllerDelegate>
 
+@property (assign, nonatomic) id<TapItAdDelegate> delegate;
 @property (retain, nonatomic) NSString *adZone;
 
 - (NSString *)customParameterForKey:(NSString *)key;

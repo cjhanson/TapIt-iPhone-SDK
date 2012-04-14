@@ -16,9 +16,9 @@
 @implementation FirstViewController
 
 - (void)viewWillAppear:(BOOL)animated {
-    [tapitAd setCustomParameterString:@"3644" forKey:@"zone"];
-//    [tapitAd setAdZone:@"3644"];
-    [tapitAd startServingAds];
+    tapitAd.delegate = self;
+//    [tapitAd setCustomParameterString:@"test" forKey:@"mode"];
+    [tapitAd startServingAdsForZone:@"3644"];
 }
 
 - (void)viewDidLoad

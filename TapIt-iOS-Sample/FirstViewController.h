@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TapItAdDelegate.h"
 
 @class TapItAdBannerView;
 
-@interface FirstViewController : UIViewController {
+@interface FirstViewController : UIViewController <TapItAdDelegate> {
     IBOutlet TapItAdBannerView *tapitAd;
 }
 @end

@@ -9,11 +9,18 @@
 #import "TapItAdBannerView.h"
 #import "TapitAdView.h"
 #import "TapItAppTracker.h"
+#import "TapItAdManager.h"
+
+@class TapItAdManager;
 
 @interface TapItAdBase()
 
-- (BOOL)requestAds;
+@property (retain, nonatomic) TapItAdView *adView;
+@property (retain, nonatomic) TapItAdManager *adManager;
+
+- (BOOL)requestAdsForZone:(NSString *)zone;
 - (void)cancelAds;
+- (void)openURLInFullscreenBrowser:(NSURL *)url;
 
 @end
 
@@ -33,14 +40,13 @@
     [self setFrameOffscreen]; // hide the ad view until we have an ad to place in it
 //    self.animated = YES; //default value
     self.animated = NO;
+    self.adManager.delegate = self;
 }
 
-- (id)initWithFrame:(CGRect)frame andAdZone:(NSString *)theAdZone {
-    NSLog(@"initWithFrame");
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self commonInit];
-//        [self setAdZone:theAdZone];
     }
     return self;
 }
@@ -55,8 +61,9 @@
     return self;
 }
 
-- (BOOL)startServingAds {
-    return [super requestAds];
+- (BOOL)startServingAdsForZone:(NSString *)zone {
+    self.adZone = zone;
+    return [super requestAdsForZone:zone];
 }
 
 - (void)moveFrameOnscreen {
@@ -86,11 +93,30 @@
     }
 }
 
-- (void)managerHasAdForDisplay:(TapItAdView *)theAd adType:(TapItAdType)type {
-    [super managerHasAdForDisplay:theAd adType:type];
+- (void)didReceiveAd:(id)sender {
+    self.adView = (TapItAdView *)sender;
+    [self.adView setFrame:CGRectMake(0, 0, 320, 50)]; //FIXME get rid of hard coded size!
+    [self addSubview:self.adView];
     [self moveFrameOnscreen];
+    if ([delegate respondsToSelector:@selector(didReceiveAd:)]) {
+        [delegate didReceiveAd:self]; // yes self, don't use sender it's an internal object
+    }
 }
 
+- (BOOL)adShouldOpen:(id)sender withUrl:(NSURL*)url {
+    BOOL shouldOpen = YES;
+    
+    if ([delegate respondsToSelector:@selector(adShouldOpen:withUrl:)]) {
+        shouldOpen = [delegate adShouldOpen:self withUrl:url]; // yes self, don't use sender it's an internal object
+    }
+    
+    if (shouldOpen) {
+        [self openURLInFullscreenBrowser:url];
+        shouldOpen = NO;
+    }
+    
+    return shouldOpen;
+}
 
 - (void)dealloc {
     [super dealloc];

@@ -8,19 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "TapItAdView.h"
+#import "tapItAdDelegate.h"
 
 @class TapItRequest;
 
-@protocol TapItAdManagerDelegate
-- (void)managerHasAdForDisplay:(TapItAdView *)theAd adType:(TapItAdType)type;
-@end
 
-
-@interface TapItAdManager : NSObject <UIWebViewDelegate> {
+@interface TapItAdManager : NSObject <TapItAdDelegate> {
     NSMutableData *connectionData;
 }
 
-@property (assign, nonatomic) id<TapItAdManagerDelegate> delegate;
+@property (assign, nonatomic) id<TapItAdDelegate> delegate;
 @property (copy, nonatomic) NSDictionary *params;
 @property (retain, nonatomic) NSURLConnection *currentConnection;
 @property (retain, nonatomic) TapItRequest *currentRequest;

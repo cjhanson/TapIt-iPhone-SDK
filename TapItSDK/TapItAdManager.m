@@ -78,48 +78,63 @@
     // generate an adView based on json object
     // notify delegate listener that ad is rdy
     
-    if ([(NSObject *)self.delegate respondsToSelector:@selector(managerHasAdForDisplay:adType:)]) {
-        TapItAdView *adView = [[TapItAdView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-        adView.delegate = self;
-        [adView loadHTMLString:html];
-        [delegate managerHasAdForDisplay:adView adType:TapItBannerAdType]; //FIXME hard coded ad type
-    }
-    else {
-        NSLog(@"Delegate doesn't respond to managerHasAdForDisplay:adType:");
-    }
-
+    //TODO pick the appropriate adType based on adType returned;
+    TapItAdView *adView = [[TapItAdView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    adView.tapitDelegate = self;
+    [adView loadHTMLString:html];
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    
-}
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"adManager: webViewDidFinishLoad");
 
-    if ([(NSObject *)self.delegate respondsToSelector:@selector(managerHasAdForDisplay:adType:)]) {
-        [delegate managerHasAdForDisplay:(TapItAdView *)webView adType:TapItBannerAdType]; //FIXME hard coded ad type
+- (void)willReceiveAd:(id)sender {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(willReceiveAd:)]) {
+        [delegate willReceiveAd:sender];
     }
-    else {
-        NSLog(@"Delegate doesn't respond to managerHasAdForDisplay:adType:");
+}
+
+- (void)didReceiveAd:(id)sender {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(didReceiveAd:)]) {
+        [delegate didReceiveAd:sender];
     }
-
-    
-    //TODO: call delegate fn
-    //    if ([self.delegate respondsToSelector:@selector(adDidLoad:)]) {
-    //        [self.delegate adDidLoad:self];
-    //    }
-    
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"webView:didFailLoadWithError:");
-    //TODO: call delegate fn
+- (void)didFailToReceiveAd:(id)sender withError:(NSError*)error {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(didFailToReceiveAd:withError:)]) {
+        [delegate didFailToReceiveAd:sender withError:error];
+    }
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+- (void)adWillStartFullScreen:(id)sender {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(adWillStartFullScreen:)]) {
+        [delegate adWillStartFullScreen:sender];
+    }
+}
+
+- (void)adDidEndFullScreen:(id)sender {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(adDidEndFullScreen:)]) {
+        [delegate adDidEndFullScreen:sender];
+    }
+}
+
+- (BOOL)adShouldOpen:(id)sender withUrl:(NSURL*)url {
+    // pass the message on down the receiver chain
+    if ([delegate respondsToSelector:@selector(adShouldOpen:withUrl:)]) {
+        return [delegate adShouldOpen:sender withUrl:url];
+    }
     return YES;
 }
+
+
+
+
+
+
+
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {

@@ -10,6 +10,7 @@
 		55202BFC1537A04A00B2244E /* TapItAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202BFB1537A04A00B2244E /* TapItAdManager.m */; };
 		55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */; };
 		552E9A6B1537F39A00FD22C4 /* TapItAdBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */; };
+		552E9A6F1538BB1F00FD22C4 /* TapItAdBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */; };
 		5594982415366E4100D6495D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982315366E4100D6495D /* UIKit.framework */; };
 		5594982615366E4100D6495D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982515366E4100D6495D /* Foundation.framework */; };
 		5594982815366E4100D6495D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982715366E4100D6495D /* CoreGraphics.framework */; };
@@ -37,6 +38,7 @@
 		55949880153695C500D6495D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594987F153695C400D6495D /* iAd.framework */; };
 		559498871536A2E500D6495D /* TapItRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498861536A2E500D6495D /* TapItRequest.m */; };
 		5594988F1536A36100D6495D /* TapItAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594988D1536A35F00D6495D /* TapItAdView.m */; };
+		55A37A6B15390288007D40C6 /* TapItAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */; };
 		55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */; };
 		55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A64B5C1537E7F200AFDDFF /* JSONKit.m */; };
 		55A64B601537E7F200AFDDFF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5D1537E7F200AFDDFF /* README.md */; };
@@ -49,6 +51,10 @@
 		55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryStringBuilder.m"; sourceTree = "<group>"; };
 		552E9A691537F39A00FD22C4 /* TapItAdBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBase.h; path = TapItSDK/TapItAdBase.h; sourceTree = "<group>"; };
 		552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdBase.m; path = TapItSDK/TapItAdBase.m; sourceTree = "<group>"; };
+		552E9A6D1538BB1F00FD22C4 /* TapItAdBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapItAdBrowserController.h; sourceTree = "<group>"; };
+		552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapItAdBrowserController.m; sourceTree = "<group>"; };
+		552E9A701538CA0A00FD22C4 /* TapItAdManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdManagerDelegate.h; path = TapItSDK/TapItAdManagerDelegate.h; sourceTree = "<group>"; };
+		552E9A711538CDB400FD22C4 /* TapItConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItConstants.h; path = TapItSDK/Headers/TapItConstants.h; sourceTree = "<group>"; };
 		5594981F15366E4100D6495D /* TapIt-iOS-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TapIt-iOS-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5594982315366E4100D6495D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5594982515366E4100D6495D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -97,7 +103,8 @@
 		5594988C1536A35F00D6495D /* TapItAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdView.h; path = TapItSDK/TapItAdView.h; sourceTree = "<group>"; };
 		5594988D1536A35F00D6495D /* TapItAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdView.m; path = TapItSDK/TapItAdView.m; sourceTree = "<group>"; };
 		5594988E1536A36000D6495D /* TapItPrivateConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItPrivateConstants.h; path = TapItSDK/TapItPrivateConstants.h; sourceTree = "<group>"; };
-		559498901536A36F00D6495D /* TapItAdBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBannerViewDelegate.h; path = TapItSDK/Headers/TapItAdBannerViewDelegate.h; sourceTree = "<group>"; };
+		559498901536A36F00D6495D /* TapItAdDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdDelegate.h; path = TapItSDK/Headers/TapItAdDelegate.h; sourceTree = "<group>"; };
+		55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapItAdBrowserController.xib; sourceTree = "<group>"; };
 		55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
 		55A64B5B1537E7F200AFDDFF /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		55A64B5C1537E7F200AFDDFF /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
@@ -183,6 +190,9 @@
 		5594984E15366E4900D6495D /* TapItSDK */ = {
 			isa = PBXGroup;
 			children = (
+				55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */,
+				552E9A6D1538BB1F00FD22C4 /* TapItAdBrowserController.h */,
+				552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */,
 				5594984F15366E5500D6495D /* Headers */,
 				5594988C1536A35F00D6495D /* TapItAdView.h */,
 				5594988D1536A35F00D6495D /* TapItAdView.m */,
@@ -196,6 +206,7 @@
 				55202BFB1537A04A00B2244E /* TapItAdManager.m */,
 				552E9A691537F39A00FD22C4 /* TapItAdBase.h */,
 				552E9A6A1537F39A00FD22C4 /* TapItAdBase.m */,
+				552E9A701538CA0A00FD22C4 /* TapItAdManagerDelegate.h */,
 			);
 			name = TapItSDK;
 			sourceTree = "<group>";
@@ -203,11 +214,12 @@
 		5594984F15366E5500D6495D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				559498901536A36F00D6495D /* TapItAdBannerViewDelegate.h */,
+				559498901536A36F00D6495D /* TapItAdDelegate.h */,
 				559498671536751400D6495D /* TapItAppTracker.h */,
 				559498681536751400D6495D /* TapItAdBannerView.h */,
 				559498691536751400D6495D /* TapItInterstitialAd.h */,
 				559498531536705200D6495D /* TapIt.h */,
+				552E9A711538CDB400FD22C4 /* TapItConstants.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -323,6 +335,7 @@
 				5594984815366E4200D6495D /* second@2x.png in Resources */,
 				55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */,
 				55A64B601537E7F200AFDDFF /* README.md in Resources */,
+				55A37A6B15390288007D40C6 /* TapItAdBrowserController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +366,7 @@
 				55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */,
 				55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */,
 				552E9A6B1537F39A00FD22C4 /* TapItAdBase.m in Sources */,
+				552E9A6F1538BB1F00FD22C4 /* TapItAdBrowserController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

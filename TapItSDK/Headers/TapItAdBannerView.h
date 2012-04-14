@@ -7,15 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TapItAdBannerViewDelegate.h"
+#import "TapItAdDelegate.h"
 #import "TapItAdBase.h"
 
 @interface TapItAdBannerView : TapItAdBase
 
-@property (assign, nonatomic) id<TapItAdBannerViewDelegate> delegate;
+@property (assign, nonatomic) id<TapItAdDelegate> delegate;
 @property (assign, nonatomic) BOOL animated;
 
-- (id)initWithFrame:(CGRect)frame andAdZone:(NSString *)theAdZone;
-- (BOOL)startServingAds;
+- (BOOL)startServingAdsForZone:(NSString *)zone;
 
 @end
