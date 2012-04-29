@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TapItAdView.h"
 #import "tapItAdDelegate.h"
+#import "TapItAdManagerDelegate.h"
 
 @class TapItRequest;
 
@@ -17,18 +18,18 @@
     NSMutableData *connectionData;
 }
 
-@property (assign, nonatomic) id<TapItAdDelegate> delegate;
+@property (assign, nonatomic) id<TapItAdDelegate, TapItAdManagerDelegate> delegate;
 @property (copy, nonatomic) NSDictionary *params;
 @property (retain, nonatomic) NSURLConnection *currentConnection;
 @property (retain, nonatomic) TapItRequest *currentRequest;
+
+- (void)startTimerForSeconds:(NSTimeInterval)seconds;
+- (void)stopTimer;
 
 - (void)requestBannerAdWithParams:(NSDictionary *)params;
 //- (void)requestInterstitialAd;
 // - (void)requestOfferWall;
 
-- (void)fireAdRequest;
 - (void)cancelAdRequests;
-
-- (void)processServerResponse;
 
 @end

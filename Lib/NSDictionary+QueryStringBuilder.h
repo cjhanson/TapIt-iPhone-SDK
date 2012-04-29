@@ -4,5 +4,6 @@
 @interface NSDictionary (QueryStringBuilder)
 
 - (NSString *)queryString;
+- (NSString *)queryStringWithAllowedKeys:(NSArray *)allowedKeys;
 
 @end

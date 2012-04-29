@@ -10,5 +10,6 @@
 #define TapIt_iOS_Sample_TapIt_h
 
 #import "TapItAdBannerView.h"
+#import "TapItConstants.h"
 
 #endif

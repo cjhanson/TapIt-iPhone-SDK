@@ -12,6 +12,7 @@
 @interface TapItAdBrowserController ()
 @property (nonatomic, retain) UIActionSheet *actionSheet;
 - (void)dismissActionSheet;
+- (void)processTapItClickTrackingRedirect:(NSURL *)tapitURL;
 @end
 
 @implementation TapItAdBrowserController
@@ -53,6 +54,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	{
 		_delegate = delegate;
 		_URL = [URL copy];
+//        NSLog(@"Loading url in internal browser: %@", _URL);
 		
 		_webView = [[UIWebView alloc] initWithFrame:CGRectZero];
 		_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | 
@@ -63,9 +65,12 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 		_spinner = [[UIActivityIndicatorView alloc] initWithFrame:CGRectZero];
 		[_spinner sizeToFit];
 		_spinner.hidesWhenStopped = YES;
+
+        [self processTapItClickTrackingRedirect:_URL];
 	}
 	return self;
 }
+
 
 - (void)dealloc
 {
@@ -104,8 +109,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	_refreshButton.enabled = NO;
 	_safariButton.enabled = NO;
 	
-	// Load up webview content.
-	[_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
+    // content will be loaded once the tapit link tracker redirect occurs...
 }
 
 #pragma mark -
@@ -190,6 +194,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request 
  navigationType:(UIWebViewNavigationType)navigationType 
 {
+    NSLog(@"AdBrowser->webView:shouldStartLoadWithRequest: %@ (%d)", request, navigationType);
 	
 	/* 
 	 * For all links with http:// or https:// scheme, open in our browser UNLESS
@@ -223,6 +228,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webViewDidStartLoad:(UIWebView *)webView 
 {
+    NSLog(@"AdBrowser->webViewDidFinishLoad");
 	_refreshButton.enabled = YES;
 	_safariButton.enabled = YES;
 	[_spinner startAnimating];
@@ -230,6 +236,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView 
 {
+    NSLog(@"AdBrowser->webViewDidFinishLoad");
 	_refreshButton.enabled = YES;
 	_safariButton.enabled = YES;	
 	_backButton.enabled = _webView.canGoBack;
@@ -239,8 +246,39 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error 
 {
+    NSLog(@"AdBrowser->webView:didFailLoadWithError: %@", error);
 	[self webViewDidFinishLoad:webView];
 }
+
+#pragma mark -
+#pragma mark TapIt click tracking redirect code
+
+- (void)processTapItClickTrackingRedirect:(NSURL *)tapitURL
+{
+//    NSLog(@"Handling tapit click tracking hop: %@", tapitURL);
+    NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:tapitURL] delegate:self startImmediately:YES];
+    [con release];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    NSURL *responseURL = [response URL];
+    
+    NSLog(@"NSURLConnection handling this url: %@", responseURL);
+    if(![responseURL.host hasSuffix:@"c.tapit.com"])
+    {
+        // not the tracking url, fire the webview request
+        NSLog(@"not the tracking url, firing the webview request");
+        self.URL = responseURL;
+        [connection cancel];
+        [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];    
+    }
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSLog(@"No more redirects: %@", connection);
+}
+
 
 #pragma mark -
 #pragma mark Drawing

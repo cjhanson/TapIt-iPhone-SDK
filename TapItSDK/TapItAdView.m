@@ -7,6 +7,7 @@
 //
 
 #import "TapItAdView.h"
+#import "TapItPrivateConstants.h"
 
 @implementation TapItAdView
 

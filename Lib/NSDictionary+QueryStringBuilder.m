@@ -14,25 +14,39 @@ static NSString * escapeString(NSString *unencodedString)
 
 @implementation NSDictionary (QueryStringBuilder)
 
-- (NSString *)queryString
+- (NSString *)queryString {
+    return [self queryStringWithAllowedKeys:nil];    
+}
+
+- (NSString *)queryStringWithAllowedKeys:(NSArray *)allowedKeys
 {
     NSMutableString *queryString = nil;
-    NSArray *keys = [self allKeys];
+    if (nil == allowedKeys) {
+        allowedKeys = [self allKeys];
+    }
     
-    if ([keys count] > 0) {
-        for (id key in keys) {
-            id value = [self objectForKey:key];
-            if (nil == queryString) {
-                queryString = [[[NSMutableString alloc] init] autorelease];
-            }
-            else {
-                [queryString appendFormat:@"&"];
-            }
-            
-            if (nil != key && nil != value) {
-                [queryString appendFormat:@"%@=%@", escapeString(key), escapeString(value)];
-            } else if (nil != key) {
-                [queryString appendFormat:@"%@", escapeString(key)];
+    if ([allowedKeys count] > 0) {
+        for (id key in allowedKeys) {
+            if (nil != key) {
+                id value = [self objectForKey:key];
+                if (nil != value) {
+                    if (nil == queryString) {
+                        queryString = [[[NSMutableString alloc] init] autorelease];
+                    }
+                    else {
+                        [queryString appendFormat:@"&"];
+                    }
+                    
+                    if ([value isKindOfClass:[NSString class]]) {
+                        [queryString appendFormat:@"%@=%@", escapeString(key), escapeString(value)];
+                    }
+                    else if ([value isKindOfClass:[NSNumber class]]) {
+                        [queryString appendFormat:@"%@=%@", escapeString(key), [value stringValue]];
+                    }
+                    else if ([value isKindOfClass:[NSNull class]]) {
+                        [queryString appendFormat:@"%@", escapeString(key)];
+                    }
+                }
             }
         }
     }

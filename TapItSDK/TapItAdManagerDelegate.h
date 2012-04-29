@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TapItConstants.h"
+#import "TapItPrivateConstants.h"
 
 @class TapItAdView;
 
-@protocol TapItAdManagerDelegate <NSObject>
-- (void)managerHasAdForDisplay:(TapItAdView *)theAd adType:(TapItAdType)type;
+@protocol TapItAdManagerDelegate <TapItAdDelegate>
+- (void)timerElapsed;
 @end

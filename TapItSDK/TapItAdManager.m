@@ -11,6 +11,17 @@
 #import "TapItAppTracker.h"
 #import "JSONKit.h"
 
+@interface TapItAdManager () {
+    NSTimer *timer;
+}
+
+    - (void)fireAdRequest;
+    - (void)processServerResponse;
+
+    - (void)timerElapsed;
+@end
+
+
 @implementation TapItAdManager
 /**
  * handles requesting and producing ad view blocks
@@ -20,7 +31,7 @@
 
 - (TapItAdManager *)init {
     if (self = [super init]) {
-        params = [[[NSMutableDictionary alloc] initWithCapacity:10] retain];
+        self.params = [[[NSMutableDictionary alloc] initWithCapacity:10] retain];
     }
     
     return self;
@@ -34,13 +45,13 @@
 
 - (void)fireAdRequest {
     // generate a url form params
-    currentRequest = [TapItRequest requestWithParams:params];
-    self.currentConnection = [[NSURLConnection connectionWithRequest:currentRequest delegate:self] retain];
+    self.currentRequest = [TapItRequest requestWithParams:params];
+    self.currentConnection = [NSURLConnection connectionWithRequest:self.currentRequest delegate:self];
     if (self.currentConnection) {
         connectionData = [[NSMutableData data] retain];
     }
     else {
-        NSLog(@"Couldn't create a request connection");
+        NSLog(@"Couldn't create a request connection: %@", currentRequest);
     }
 }
 
@@ -52,18 +63,17 @@
     NSString* rawResults = [[NSString alloc] initWithData:connectionData encoding:NSASCIIStringEncoding];
 //    NSLog(@"Got this data: %@", rawResults);
     
-    currentRequest.rawResults = rawResults;
+    self.currentRequest.rawResults = rawResults;
 
     [self setCurrentConnection:nil];
-    [connectionData release];
-    connectionData = nil;
+    [connectionData release], connectionData = nil;
     
     // process connectionData as json
     [self processServerResponse];
 }
 
 - (void)processServerResponse {
-    NSDictionary *deserializedData = [currentRequest.rawResults objectFromJSONString];
+    NSDictionary *deserializedData = [self.currentRequest.rawResults objectFromJSONString];
     NSString *errorMsg = [deserializedData objectForKey:@"error"];
     if (!errorMsg) {
         NSLog(@"server returned an error message!");
@@ -130,13 +140,6 @@
 }
 
 
-
-
-
-
-
-
-
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     [self setCurrentConnection:nil];
     [connectionData release];
@@ -144,7 +147,29 @@
     NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 }
 
+
+#pragma mark -
+#pragma mark Timer methods
+
+- (void)startTimerForSeconds:(NSTimeInterval)seconds {
+    timer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(timerElapsed) userInfo:nil repeats:NO] retain];
+}
+
+- (void)timerElapsed {
+    if ([delegate respondsToSelector:@selector(timerElapsed)]) {
+        [delegate timerElapsed];
+    }
+}
+
+- (void)stopTimer {
+    [timer invalidate];
+    [timer release], timer = nil;
+}
+
+
 - (void)cancelAdRequests {
+    [self stopTimer];
+    
     if (currentConnection) {
         [currentConnection cancel];
         [currentConnection release], currentConnection = nil;
@@ -159,7 +184,6 @@
     [self cancelAdRequests];
 
     [params release], params = nil;
-    [currentConnection release], currentConnection = nil;
     [currentRequest release], currentRequest = nil;
 
     [super dealloc];

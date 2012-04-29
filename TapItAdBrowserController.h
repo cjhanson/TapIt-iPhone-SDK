@@ -19,7 +19,7 @@
 
 @protocol TapItAdBrowserControllerDelegate;
 
-@interface TapItAdBrowserController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate>
+@interface TapItAdBrowserController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, NSURLConnectionDataDelegate>
 {
 	id<TapItAdBrowserControllerDelegate> _delegate;
 	UIWebView *_webView;

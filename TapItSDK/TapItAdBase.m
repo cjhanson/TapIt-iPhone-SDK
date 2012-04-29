@@ -43,7 +43,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self baseCommonInit];
-        [self setCustomParameterString:theAdZone forKey:@"zone"];
+        [self setCustomParameter:theAdZone forKey:@"zone"];
         [self setAdZone:theAdZone];
     }
     return self;
@@ -59,17 +59,20 @@
     return self;
 }
 
-- (NSString *)customParameterForKey:(NSString *)key {
+#pragma mark -
+#pragma mark customParams methods
+
+- (id)customParameterForKey:(NSString *)key {
     return [customParameters objectForKey:key];
 }
 
-- (NSString *)setCustomParameterString:(NSString *)value forKey:(NSString *)key {
+- (id)setCustomParameter:(id)value forKey:(NSString *)key {
     NSString *oldVal = [customParameters objectForKey:key];
     [customParameters setObject:value forKey:key];
     return oldVal;
 }
 
-- (NSString *)removeCustomParameterStringForKey:(NSString *)key {
+- (id)removeCustomParameterForKey:(NSString *)key {
     NSString *oldVal = [customParameters objectForKey:key];
     [customParameters removeObjectForKey:key];
     return oldVal;
@@ -87,7 +90,10 @@
 
 
 - (void)setDefaultParams {
-    [self setCustomParameterString:[[TapItAppTracker sharedAppTracker] userAgent] forKey:@"ua"];
+    [self setCustomParameter:@"json" forKey:@"format"];
+    TapItAppTracker *tracker = [TapItAppTracker sharedAppTracker];
+    [self setCustomParameter:[tracker deviceUDID] forKey:@"udid"];
+    [self setCustomParameter:[tracker userAgent] forKey:@"ua"];
     // zone
     // location (if enabled)
     // connection speed
@@ -104,7 +110,7 @@
         return NO;
     }
     
-    [self setCustomParameterString:zone forKey:@"zone"];
+    [self setCustomParameter:zone forKey:@"zone"];
     [self setDefaultParams];
     [adManager requestBannerAdWithParams:customParameters];
     return YES;
@@ -116,9 +122,8 @@
 }
 
 
-
-
-
+#pragma mark -
+#pragma mark TapItAdDelegate methods
 
 - (void)willReceiveAd:(id)sender {
     if ([delegate respondsToSelector:@selector(willReceiveAd:)]) {
@@ -169,6 +174,9 @@
 //    return shouldOpen;
 //}
 
+#pragma mark -
+#pragma mark TapItAdBrowserControllerDelegate methods
+
 - (void)dismissBrowserController:(TapItAdBrowserController *)browserController {
     [self dismissBrowserController:browserController animated:YES];
 }
@@ -188,9 +196,14 @@
     //	else if ([self.autorefreshTimer isScheduled]) [self.autorefreshTimer resume];
 }
 
+#pragma mark -
+#pragma mark TapItAdManagerDelegate methods
 
+- (void)timerElapsed {
+    // This method should be overridden by child class
+}
 
-
+#pragma mark -
 
 - (void)dealloc {
     [adManager cancelAdRequests];

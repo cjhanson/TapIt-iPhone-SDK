@@ -110,8 +110,11 @@
         <class className="SecondViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondViewController.h"/>
         </class>
-        <class className="TapItAdBannerView" superclassName="UIView">
+        <class className="TapItAdBannerView" superclassName="TapItAdBase">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/TapItAdBannerView.h"/>
+        </class>
+        <class className="TapItAdBase" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TapItAdBase.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

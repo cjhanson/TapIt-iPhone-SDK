@@ -10,6 +10,7 @@
 #import "TapItAdDelegate.h"
 #import "TapItAdBase.h"
 
+
 @interface TapItAdBannerView : TapItAdBase
 
 @property (assign, nonatomic) id<TapItAdDelegate> delegate;

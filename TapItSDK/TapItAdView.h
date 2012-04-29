@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TapItAdManagerDelegate.h"
 #import "TapItAdDelegate.h"
-#import "TapItConstants.h"
 
 @class TapItRequest;
 

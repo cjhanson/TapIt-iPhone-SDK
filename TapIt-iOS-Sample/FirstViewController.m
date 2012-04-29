@@ -17,7 +17,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     tapitAd.delegate = self;
-//    [tapitAd setCustomParameterString:@"test" forKey:@"mode"];
+//    [tapitAd setCustomParameter:@"test" forKey:@"mode"];
+    NSNumber *val = [NSNumber numberWithInt:5];
+    [tapitAd setCustomParameter:val forKey:TAPIT_PARAM_KEY_BANNER_ROTATE_INTERVAL];
     [tapitAd startServingAdsForZone:@"3644"];
 }
 
