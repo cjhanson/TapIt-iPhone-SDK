@@ -7,16 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TapItAdDelegate.h"
+#import "TapItAdManagerDelegate.h"
 
 @class TapItRequest;
 
 @interface TapItAdView : UIWebView <UIWebViewDelegate>
 
 @property (retain, nonatomic) TapItRequest *tapitRequest;
-@property (assign, nonatomic) id<TapItAdDelegate> tapitDelegate;
+@property (assign, nonatomic) id<TapItAdManagerDelegate> tapitDelegate;
 @property (assign, nonatomic) BOOL isLoaded;
+@property (assign, nonatomic) BOOL wasAdActionShouldBeginMessageFired;
+@property (retain, nonatomic) NSDictionary *data;
 
 - (void)setScrollable:(BOOL)scrollable;
-- (void)loadHTMLString:(NSString *)string;
+//- (void)loadHTMLString:(NSString *)string;
+- (void)loadData:(NSDictionary *)data;
 @end

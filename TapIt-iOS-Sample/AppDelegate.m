@@ -24,6 +24,9 @@
     TapItAppTracker *appTracker = [TapItAppTracker sharedAppTracker];
     [appTracker reportApplicationOpen];
     
+    
+    [NSClassFromString(@"WebView") performSelector:@selector(_enableRemoteInspector)];
+    
     return YES;
 }
 							

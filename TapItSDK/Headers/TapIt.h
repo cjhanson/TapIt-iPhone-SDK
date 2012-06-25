@@ -6,10 +6,14 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#ifndef TapIt_iOS_Sample_TapIt_h
-#define TapIt_iOS_Sample_TapIt_h
+#ifndef TapIt_iOS_SDK_h
+#define TapIt_iOS_SDK_h
 
-#import "TapItAdBannerView.h"
 #import "TapItConstants.h"
+#import "TapItAppTracker.h"
+#import "TapItAdDelegates.h"
+#import "TapItRequest.h"
+#import "TapItBannerAdView.h"
+#import "TapItInterstitialAd.h"
 
 #endif

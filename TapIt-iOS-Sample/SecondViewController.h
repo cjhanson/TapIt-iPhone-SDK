@@ -7,7 +7,28 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TapItAdDelegates.h"
 
-@interface SecondViewController : UIViewController
+enum {
+    StateLoading    = 1,
+    StateError      = 2,
+    StateReady      = 3,
+};
+typedef NSUInteger ButtonState;
 
+
+@class TapItInterstitialAd;
+
+@interface SecondViewController : UIViewController <TapItInterstitialAdDelegate> 
+
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (retain, nonatomic) IBOutlet UIButton *loadButton;
+@property (retain, nonatomic) IBOutlet UIButton *showButton;
+
+@property (retain, nonatomic) TapItInterstitialAd *interstitialAd;
+
+- (IBAction)loadInterstitial:(id)sender;
+- (IBAction)showInterstitial:(id)sender;
+
+- (void)updateUIWithState:(ButtonState)state;
 @end

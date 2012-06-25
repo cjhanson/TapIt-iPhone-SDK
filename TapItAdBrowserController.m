@@ -66,7 +66,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 		[_spinner sizeToFit];
 		_spinner.hidesWhenStopped = YES;
 
-        [self processTapItClickTrackingRedirect:_URL];
+//        [self processTapItClickTrackingRedirect:_URL];
 	}
 	return self;
 }
@@ -110,6 +110,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	_safariButton.enabled = NO;
 	
     // content will be loaded once the tapit link tracker redirect occurs...
+    [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
 }
 
 #pragma mark -
@@ -276,6 +277,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    
     NSLog(@"No more redirects: %@", connection);
 }
 

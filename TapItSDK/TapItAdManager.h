@@ -8,27 +8,28 @@
 
 #import <UIKit/UIKit.h>
 #import "TapItAdView.h"
-#import "tapItAdDelegate.h"
+#import "tapItAdDelegates.h"
 #import "TapItAdManagerDelegate.h"
 
 @class TapItRequest;
 
 
-@interface TapItAdManager : NSObject <TapItAdDelegate> {
+@interface TapItAdManager : NSObject <TapItAdManagerDelegate> {
     NSMutableData *connectionData;
 }
 
-@property (assign, nonatomic) id<TapItAdDelegate, TapItAdManagerDelegate> delegate;
+@property (assign, nonatomic) id<TapItAdManagerDelegate> delegate;
 @property (copy, nonatomic) NSDictionary *params;
 @property (retain, nonatomic) NSURLConnection *currentConnection;
 @property (retain, nonatomic) TapItRequest *currentRequest;
 
-- (void)startTimerForSeconds:(NSTimeInterval)seconds;
-- (void)stopTimer;
 
-- (void)requestBannerAdWithParams:(NSDictionary *)params;
-//- (void)requestInterstitialAd;
-// - (void)requestOfferWall;
+- (void)fireAdRequest:(TapItRequest *)request;
+
+
+////TODO timer code shouldn't be here...
+//- (void)startTimerForSeconds:(NSTimeInterval)seconds;
+//- (void)stopTimer;
 
 - (void)cancelAdRequests;
 

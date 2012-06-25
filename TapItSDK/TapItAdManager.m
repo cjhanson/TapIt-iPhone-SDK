@@ -10,15 +10,19 @@
 #import "TapItRequest.h"
 #import "TapItAppTracker.h"
 #import "JSONKit.h"
+#import "TapItAdBrowserController.h"
+
+@interface TapItRequest () 
+@property (retain, nonatomic) NSString *rawResults;
+
+- (NSURLRequest *)getURLRequest;
+@end
 
 @interface TapItAdManager () {
     NSTimer *timer;
 }
 
-    - (void)fireAdRequest;
     - (void)processServerResponse;
-
-    - (void)timerElapsed;
 @end
 
 
@@ -31,28 +35,37 @@
 
 - (TapItAdManager *)init {
     if (self = [super init]) {
-        self.params = [[[NSMutableDictionary alloc] initWithCapacity:10] retain];
+        self.params = [[[NSMutableDictionary alloc] initWithCapacity:10] autorelease];
     }
     
     return self;
 }
 
-- (void)requestBannerAdWithParams:(NSDictionary *)theParams {
-    [self cancelAdRequests];
-    [self setParams:theParams];
-    [self fireAdRequest];
-}
+//- (void)requestBannerAdWithParams:(NSDictionary *)theParams {
+//    [self cancelAdRequests];
+//    [self setParams:theParams];
+//    [self fireAdRequest];
+//}
 
-- (void)fireAdRequest {
+- (void)fireAdRequest:(TapItRequest *)request {
     // generate a url form params
-    self.currentRequest = [TapItRequest requestWithParams:params];
-    self.currentConnection = [NSURLConnection connectionWithRequest:self.currentRequest delegate:self];
+    self.currentRequest = request;
+    [delegate willLoadAdWithRequest:self.currentRequest]; 
+//    NSLog(@"Requesting Ad: %@", self.currentRequest);
+    self.currentConnection = [NSURLConnection connectionWithRequest:[self.currentRequest getURLRequest] delegate:self];
     if (self.currentConnection) {
         connectionData = [[NSMutableData data] retain];
     }
     else {
-        NSLog(@"Couldn't create a request connection: %@", currentRequest);
+        NSLog(@"Couldn't create a request connection: %@", self.currentRequest);
     }
+}
+
+- (NSURLRequest *)connection: (NSURLConnection *)inConnection
+             willSendRequest: (NSURLRequest *)inRequest
+            redirectResponse: (NSURLResponse *)inRedirectResponse {
+//    NSLog(@"inRequest: %@, inRedirectResponse: %@", inRequest, inRedirectResponse);
+    return inRequest;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -64,8 +77,9 @@
 //    NSLog(@"Got this data: %@", rawResults);
     
     self.currentRequest.rawResults = rawResults;
-
-    [self setCurrentConnection:nil];
+    [rawResults release];
+        
+    self.currentConnection = nil;
     [connectionData release], connectionData = nil;
     
     // process connectionData as json
@@ -73,72 +87,90 @@
 }
 
 - (void)processServerResponse {
-    NSDictionary *deserializedData = [self.currentRequest.rawResults objectFromJSONString];
-    NSString *errorMsg = [deserializedData objectForKey:@"error"];
-    if (!errorMsg) {
-        NSLog(@"server returned an error message!");
+    NSError *error = nil;
+    NSDictionary *deserializedData = [self.currentRequest.rawResults objectFromJSONStringWithParseOptions:JKParseOptionStrict error:&error];
+    if (error) {
+        NSLog(@"JSON parse failed: %@", error);
+        NSString *errStr;
+        if (!self.currentRequest.rawResults) {
+            errStr = @"Server returned an empty response";
+        }
+        else {
+            // assume server returned a naked response
+            errStr = self.currentRequest.rawResults;
+        }
+        NSDictionary *details = [NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescriptionKey];
+        NSError *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:500 userInfo:details];
+        [delegate adView:nil didFailToReceiveAdWithError:error];
+        return;
     }
-    NSString *html = [deserializedData objectForKey:@"html"];
+    NSString *errorMsg = [deserializedData objectForKey:@"error"];
+    if (errorMsg) {
+        NSLog(@"Server Returned JSON error: %@", errorMsg);
+        NSDictionary *details = [NSDictionary dictionaryWithObject:errorMsg forKey:NSLocalizedDescriptionKey];
+        NSError *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:400 userInfo:details];
+        [delegate adView:nil didFailToReceiveAdWithError:error];
+        return;
+    }
     NSString *adType = [deserializedData objectForKey:@"type"]; // html banner ormma offerwall video
     NSString *adHeight = [deserializedData objectForKey:@"adHeight"];
+    int height = [adHeight intValue];
     NSString *adWidth = [deserializedData objectForKey:@"adWidth"];
-    NSLog(@"Ad dimentions: %@, %@ (%@)", adHeight, adWidth, adType);
-    NSLog(@"This is the HTML we're supposed to use: %@", html);
+    int width = [adWidth intValue];
+//    NSLog(@"Ad dimentions: %@, %@ (%@)", adHeight, adWidth, adType);
 
     // generate an adView based on json object
-    // notify delegate listener that ad is rdy
+    TapItAdView *adView;
+    if ([adType isEqualToString:@"banner"] || 
+        [adType isEqualToString:@"html"]) {
+        adView = [[TapItAdView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
+    } else if ([adType isEqualToString:@"offerwall"]) {
+        adView = nil;
+    }
+    else if ([adType isEqualToString:@"video"]) {
+        adView = nil;
+    }
+    else {
+        NSString *errStr = [NSString stringWithFormat:@"Unsupported ad type: %@ (%@)", adType, self.currentRequest.rawResults];
+        NSDictionary *details = [NSDictionary dictionaryWithObject:errStr forKey:NSLocalizedDescriptionKey];
+        NSError *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:500 userInfo:details];
+        [delegate adView:nil didFailToReceiveAdWithError:error];
+        return;
+    }
     
-    //TODO pick the appropriate adType based on adType returned;
-    TapItAdView *adView = [[TapItAdView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
     adView.tapitDelegate = self;
-    [adView loadHTMLString:html];
+    [adView loadData:deserializedData];
 }
 
+#pragma mark -
+#pragma mark TapItAdManagerDelegate methods
 
-
-- (void)willReceiveAd:(id)sender {
+- (void)willLoadAdWithRequest:(TapItRequest *)request {
     // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(willReceiveAd:)]) {
-        [delegate willReceiveAd:sender];
-    }
+    [delegate willLoadAdWithRequest:request];
 }
 
-- (void)didReceiveAd:(id)sender {
+- (void)didLoadAdView:(TapItAdView *)adView {
     // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(didReceiveAd:)]) {
-        [delegate didReceiveAd:sender];
-    }
+    [delegate didLoadAdView:adView];
 }
 
-- (void)didFailToReceiveAd:(id)sender withError:(NSError*)error {
+- (void)adView:(TapItAdView *)adView didFailToReceiveAdWithError:(NSError*)error {
     // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(didFailToReceiveAd:withError:)]) {
-        [delegate didFailToReceiveAd:sender withError:error];
-    }
+    [delegate adView:adView didFailToReceiveAdWithError:error];
 }
 
-- (void)adWillStartFullScreen:(id)sender {
+- (BOOL)adActionShouldBegin:(NSURL *)actionUrl willLeaveApplication:(BOOL)willLeave {
     // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(adWillStartFullScreen:)]) {
-        [delegate adWillStartFullScreen:sender];
-    }
+    return [delegate adActionShouldBegin:actionUrl willLeaveApplication:willLeave];
 }
 
-- (void)adDidEndFullScreen:(id)sender {
+- (void)adViewActionDidFinish:(TapItAdView *)adView {
     // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(adDidEndFullScreen:)]) {
-        [delegate adDidEndFullScreen:sender];
-    }
+    [delegate adViewActionDidFinish:adView];
 }
 
-- (BOOL)adShouldOpen:(id)sender withUrl:(NSURL*)url {
-    // pass the message on down the receiver chain
-    if ([delegate respondsToSelector:@selector(adShouldOpen:withUrl:)]) {
-        return [delegate adShouldOpen:sender withUrl:url];
-    }
-    return YES;
-}
-
+#pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     [self setCurrentConnection:nil];
@@ -148,27 +180,27 @@
 }
 
 
-#pragma mark -
-#pragma mark Timer methods
-
-- (void)startTimerForSeconds:(NSTimeInterval)seconds {
-    timer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(timerElapsed) userInfo:nil repeats:NO] retain];
-}
-
-- (void)timerElapsed {
-    if ([delegate respondsToSelector:@selector(timerElapsed)]) {
-        [delegate timerElapsed];
-    }
-}
-
-- (void)stopTimer {
-    [timer invalidate];
-    [timer release], timer = nil;
-}
+//#pragma mark -
+//#pragma mark Timer methods
+//
+//- (void)startTimerForSeconds:(NSTimeInterval)seconds {
+//    timer = [[NSTimer scheduledTimerWithTimeInterval:seconds target:self selector:@selector(timerElapsed) userInfo:nil repeats:NO] retain];
+//}
+//
+//- (void)timerElapsed {
+//    if ([delegate respondsToSelector:@selector(timerElapsed)]) {
+//        [delegate timerElapsed];
+//    }
+//}
+//
+//- (void)stopTimer {
+//    [timer invalidate];
+//    [timer release], timer = nil;
+//}
 
 
 - (void)cancelAdRequests {
-    [self stopTimer];
+//    [self stopTimer];
     
     if (currentConnection) {
         [currentConnection cancel];
@@ -179,6 +211,8 @@
         [connectionData release], connectionData = nil;
     }
 }
+
+#pragma mark -
 
 - (void)dealloc {
     [self cancelAdRequests];

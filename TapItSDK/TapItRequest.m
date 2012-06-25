@@ -9,28 +9,59 @@
 #import "TapItRequest.h"
 #import "TapItPrivateConstants.h"
 #import "NSDictionary+QueryStringBuilder.h"
+#import "TapItAppTracker.h"
 
-@interface TapItRequest ()
-+(NSArray *)allowedServerVariables;
+
+@interface TapItRequest () 
+
+@property (retain, nonatomic) NSString *adZone;
+@property (retain, nonatomic) NSMutableDictionary *parameters;
+@property (retain, nonatomic) NSString *rawResults;
+
++(NSArray *)allowedServerVariables; //TODO probably needs to be moved to bannerview/interstitialcontroller
+
+- (NSURLRequest *)getURLRequest;
 
 @end
 
 @implementation TapItRequest
 
-@synthesize parameters, rawResults;
+@synthesize adZone, parameters, rawResults;
 
-+ (TapItRequest *)requestWithParams:(NSDictionary *)theParams {
-    TapItRequest *ret = [TapItRequest alloc];
+
++ (TapItRequest *)requestWithAdZone:(NSString *)zone {
+    return [TapItRequest requestWithAdZone:zone andCustomParameters:nil];
+}
+
++ (TapItRequest *)requestWithAdZone:(NSString *)zone andCustomParameters:(NSDictionary *)theParams {
+    TapItRequest *ret = [[[TapItRequest alloc] init] autorelease];
+    ret.adZone = zone;
+    if (theParams) {
+        [ret.parameters addEntriesFromDictionary:theParams];
+    }
+    return ret;
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.parameters = [[NSMutableDictionary alloc] initWithCapacity:10];
+    }
+    return self;
+}
+
+- (NSURLRequest *)getURLRequest {
     //TODO add in missing required fields and filter out invalid params
+    [self setDefaultParams];
     NSString *urlStr = [NSString stringWithFormat:@"%@?%@",
                         TAPIT_AD_SERVER_URL,
-                        [theParams queryStringWithAllowedKeys:[TapItRequest allowedServerVariables]]
+                        [self.parameters queryStringWithAllowedKeys:[TapItRequest allowedServerVariables]]
                         ];
-    NSLog(@"%@", urlStr);
+//    NSLog(@"%@", urlStr);
     NSURL *url = [NSURL URLWithString:urlStr];
-    [ret initWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:30.0];
-    [ret setParameters:theParams];
-    return ret;
+    NSURLRequest *req = [[[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:30.0] autorelease];
+    return req;
+    
 }
 
 +(NSArray *)allowedServerVariables {
@@ -48,6 +79,7 @@
                                   @"mode",
                                   @"lat",
                                   @"long",
+                                  @"adtype",
                                   //TODO finish this list...
                                   nil] retain];
     }
@@ -55,9 +87,40 @@
     return allowedServerVariables;
 }
 
+#pragma mark -
+#pragma mark customParams methods
+
+- (id)customParameterForKey:(NSString *)key {
+    return [parameters objectForKey:key];
+}
+
+- (id)setCustomParameter:(id)value forKey:(NSString *)key {
+    NSString *oldVal = [parameters objectForKey:key];
+    [parameters setObject:value forKey:key];
+    return oldVal;
+}
+
+- (id)removeCustomParameterForKey:(NSString *)key {
+    NSString *oldVal = [parameters objectForKey:key];
+    [parameters removeObjectForKey:key];
+    return oldVal;
+}
+
+- (void)setDefaultParams {
+    [self setCustomParameter:self.adZone forKey:@"zone"];
+    [self setCustomParameter:@"json" forKey:@"format"];
+    TapItAppTracker *tracker = [TapItAppTracker sharedAppTracker];
+    [self setCustomParameter:[tracker deviceUDID] forKey:@"udid"];
+    [self setCustomParameter:[tracker userAgent] forKey:@"ua"];
+    // location (if enabled)
+    // connection speed
+    // 
+}
+
 -(void)dealloc {
-    [parameters release], parameters = nil;
-    [rawResults release], rawResults = nil;
+    self.rawResults = nil;
+    self.parameters = nil;
+    self.adZone = nil;
     
     [super dealloc];
 }

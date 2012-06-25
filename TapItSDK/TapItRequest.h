@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TapItRequest : NSURLRequest {
-    NSDictionary *_serverParameters;
-}
+@interface TapItRequest : NSObject
 
-@property (copy, nonatomic) NSDictionary *parameters;
-@property (retain, nonatomic) NSString *rawResults;
++ (TapItRequest *)requestWithAdZone:(NSString *)zone;
++ (TapItRequest *)requestWithAdZone:(NSString *)zone andCustomParameters:(NSDictionary *)theParams;
 
-+ (TapItRequest *)requestWithParams:(NSDictionary *)theParams;
+- (id)customParameterForKey:(NSString *)key;
+- (id)setCustomParameter:(id)value forKey:(NSString *)key;
+- (id)removeCustomParameterForKey:(NSString *)key;
 
 @end

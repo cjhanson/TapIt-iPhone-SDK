@@ -7,7 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TapItAdDelegates.h"
+#import "TapItConstants.h"
+
+@class TapItRequest;
 
 @interface TapItInterstitialAd : NSObject
+
+@property (assign, nonatomic) id<TapItInterstitialAdDelegate> delegate;
+
+@property (assign) TapItInterstitialControlType controlType;
+@property (assign) TapItAdType allowedAdTypes;
+@property (readonly) BOOL loaded;
+
+- (BOOL)loadInterstitialForRequest:(TapItRequest *)request;
+
+- (void)presentFromViewController:(UIViewController *)contoller;
+- (void)presentInView:(UIView *)view;
 
 @end

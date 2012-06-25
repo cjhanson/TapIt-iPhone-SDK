@@ -9,8 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "TapItPrivateConstants.h"
 
-@class TapItAdView;
+@class TapItAdView, TapItRequest;
 
-@protocol TapItAdManagerDelegate <TapItAdDelegate>
+@protocol TapItAdManagerDelegate <NSObject>
+@required
+- (void)willLoadAdWithRequest:(TapItRequest *)request;
+- (void)didLoadAdView:(TapItAdView *)adView;
+- (void)adView:(TapItAdView *)adView didFailToReceiveAdWithError:(NSError*)error;
+- (BOOL)adActionShouldBegin:(NSURL *)actionUrl willLeaveApplication:(BOOL)willLeave;
+- (void)adViewActionDidFinish:(TapItAdView *)adView;
+
+@optional
+- (void)didReceiveResponse:(TapItAdView *)adView;
+
 - (void)timerElapsed;
 @end
