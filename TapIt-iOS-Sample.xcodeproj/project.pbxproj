@@ -10,7 +10,9 @@
 		5507941B1586FB06001AB9A7 /* TapItFullScreenAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5507941A1586FB06001AB9A7 /* TapItFullScreenAdViewController.m */; };
 		55202BFC1537A04A00B2244E /* TapItAdManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202BFB1537A04A00B2244E /* TapItAdManager.m */; };
 		55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */; };
-		552E9A6F1538BB1F00FD22C4 /* TapItAdBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */; };
+		5572AABB15997D1000D3E5A6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5572AABA15997D1000D3E5A6 /* README.md */; };
+		5572AAC11599862700D3E5A6 /* TapItAdBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5572AABE1599862600D3E5A6 /* TapItAdBrowserController.m */; };
+		5572AAC21599862700D3E5A6 /* TapItAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5572AABF1599862600D3E5A6 /* TapItAdBrowserController.xib */; };
 		5594982415366E4100D6495D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982315366E4100D6495D /* UIKit.framework */; };
 		5594982615366E4100D6495D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982515366E4100D6495D /* Foundation.framework */; };
 		5594982815366E4100D6495D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594982715366E4100D6495D /* CoreGraphics.framework */; };
@@ -32,7 +34,6 @@
 		55949880153695C500D6495D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5594987F153695C400D6495D /* iAd.framework */; };
 		559498871536A2E500D6495D /* TapItRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 559498861536A2E500D6495D /* TapItRequest.m */; };
 		5594988F1536A36100D6495D /* TapItAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5594988D1536A35F00D6495D /* TapItAdView.m */; };
-		55A37A6B15390288007D40C6 /* TapItAdBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */; };
 		55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */; };
 		55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A64B5C1537E7F200AFDDFF /* JSONKit.m */; };
 		55A64B601537E7F200AFDDFF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 55A64B5D1537E7F200AFDDFF /* README.md */; };
@@ -45,10 +46,12 @@
 		55202BFB1537A04A00B2244E /* TapItAdManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdManager.m; path = TapItSDK/TapItAdManager.m; sourceTree = "<group>"; };
 		55202C011537C59C00B2244E /* NSDictionary+QueryStringBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+QueryStringBuilder.h"; sourceTree = "<group>"; };
 		55202C021537C59C00B2244E /* NSDictionary+QueryStringBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QueryStringBuilder.m"; sourceTree = "<group>"; };
-		552E9A6D1538BB1F00FD22C4 /* TapItAdBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TapItAdBrowserController.h; sourceTree = "<group>"; };
-		552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TapItAdBrowserController.m; sourceTree = "<group>"; };
 		552E9A701538CA0A00FD22C4 /* TapItAdManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdManagerDelegate.h; path = TapItSDK/TapItAdManagerDelegate.h; sourceTree = "<group>"; };
 		552E9A711538CDB400FD22C4 /* TapItConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItConstants.h; path = TapItSDK/Headers/TapItConstants.h; sourceTree = "<group>"; };
+		5572AABA15997D1000D3E5A6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		5572AABD1599862600D3E5A6 /* TapItAdBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdBrowserController.h; path = TapItSDK/TapItAdBrowserController.h; sourceTree = "<group>"; };
+		5572AABE1599862600D3E5A6 /* TapItAdBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdBrowserController.m; path = TapItSDK/TapItAdBrowserController.m; sourceTree = "<group>"; };
+		5572AABF1599862600D3E5A6 /* TapItAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TapItAdBrowserController.xib; path = TapItSDK/TapItAdBrowserController.xib; sourceTree = "<group>"; };
 		5594981F15366E4100D6495D /* TapIt-iOS-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TapIt-iOS-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5594982315366E4100D6495D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5594982515366E4100D6495D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,7 +88,6 @@
 		5594988D1536A35F00D6495D /* TapItAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TapItAdView.m; path = TapItSDK/TapItAdView.m; sourceTree = "<group>"; };
 		5594988E1536A36000D6495D /* TapItPrivateConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItPrivateConstants.h; path = TapItSDK/TapItPrivateConstants.h; sourceTree = "<group>"; };
 		559498901536A36F00D6495D /* TapItAdDelegates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TapItAdDelegates.h; path = TapItSDK/Headers/TapItAdDelegates.h; sourceTree = "<group>"; };
-		55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TapItAdBrowserController.xib; sourceTree = "<group>"; };
 		55A64B5A1537E7F200AFDDFF /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
 		55A64B5B1537E7F200AFDDFF /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		55A64B5C1537E7F200AFDDFF /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		5594981415366E4100D6495D = {
 			isa = PBXGroup;
 			children = (
+				5572AABA15997D1000D3E5A6 /* README.md */,
 				5594985F153671A600D6495D /* Lib */,
 				5594984E15366E4900D6495D /* TapItSDK */,
 				5594982915366E4100D6495D /* TapIt-iOS-Sample */,
@@ -184,9 +187,9 @@
 				552E9A701538CA0A00FD22C4 /* TapItAdManagerDelegate.h */,
 				550794191586FB06001AB9A7 /* TapItFullScreenAdViewController.h */,
 				5507941A1586FB06001AB9A7 /* TapItFullScreenAdViewController.m */,
-				55A37A6A15390288007D40C6 /* TapItAdBrowserController.xib */,
-				552E9A6D1538BB1F00FD22C4 /* TapItAdBrowserController.h */,
-				552E9A6E1538BB1F00FD22C4 /* TapItAdBrowserController.m */,
+				5572AABD1599862600D3E5A6 /* TapItAdBrowserController.h */,
+				5572AABE1599862600D3E5A6 /* TapItAdBrowserController.m */,
+				5572AABF1599862600D3E5A6 /* TapItAdBrowserController.xib */,
 			);
 			name = TapItSDK;
 			sourceTree = "<group>";
@@ -295,7 +298,8 @@
 				5594984815366E4200D6495D /* second@2x.png in Resources */,
 				55A64B5E1537E7F200AFDDFF /* CHANGELOG.md in Resources */,
 				55A64B601537E7F200AFDDFF /* README.md in Resources */,
-				55A37A6B15390288007D40C6 /* TapItAdBrowserController.xib in Resources */,
+				5572AABB15997D1000D3E5A6 /* README.md in Resources */,
+				5572AAC21599862700D3E5A6 /* TapItAdBrowserController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,8 +323,8 @@
 				55202BFC1537A04A00B2244E /* TapItAdManager.m in Sources */,
 				55202C031537C59C00B2244E /* NSDictionary+QueryStringBuilder.m in Sources */,
 				55A64B5F1537E7F200AFDDFF /* JSONKit.m in Sources */,
-				552E9A6F1538BB1F00FD22C4 /* TapItAdBrowserController.m in Sources */,
 				5507941B1586FB06001AB9A7 /* TapItFullScreenAdViewController.m in Sources */,
+				5572AAC11599862700D3E5A6 /* TapItAdBrowserController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

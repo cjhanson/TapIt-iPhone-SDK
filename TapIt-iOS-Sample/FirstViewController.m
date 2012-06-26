@@ -23,7 +23,8 @@
     [super viewDidLoad];
     tapitAd.delegate = self;
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:  
-                                @"test", @"mode", 
+//                                @"test", @"mode", 
+                                @"1", @"cid",
                                 [NSNumber numberWithInt:15], TAPIT_PARAM_KEY_BANNER_ROTATE_INTERVAL, 
 //                                [NSNumber numberWithInt:15], TAPIT_PARAM_KEY_BANNER_ERROR_TIMEOUT_INTERVAL, 
                                 nil];

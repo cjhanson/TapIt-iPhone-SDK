@@ -73,18 +73,7 @@
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"webView trying to load url: %@", request.URL);
-    NSLog(@"(%@)", request.URL.relativeString);
-    return YES;
-    
-    
-    
-    
-    
-    
-    
-    
-    
+//    NSLog(@"webView trying to load url: %@", request.URL);
     
     if (!self.isLoaded) {
         // first time loading, let the ad load

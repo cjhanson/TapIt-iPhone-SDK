@@ -80,6 +80,7 @@
                                   @"lat",
                                   @"long",
                                   @"adtype",
+                                  @"cid",
                                   //TODO finish this list...
                                   nil] retain];
     }
