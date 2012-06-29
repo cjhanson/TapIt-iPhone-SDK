@@ -45,7 +45,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.parameters = [[NSMutableDictionary alloc] initWithCapacity:10];
+        self.parameters = [[[NSMutableDictionary alloc] initWithCapacity:10] autorelease];
     }
     return self;
 }

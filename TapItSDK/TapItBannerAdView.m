@@ -12,6 +12,7 @@
 #import "TapItAdManager.h"
 #import "TapItPrivateConstants.h"
 #import "TapItAdBrowserController.h"
+#import "TapItRequest.h"
 
 @interface TapItBannerAdView () <TapItAdManagerDelegate, TapItAdBrowserControllerDelegate> {
     NSTimer *timer;
