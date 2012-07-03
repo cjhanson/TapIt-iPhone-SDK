@@ -20,7 +20,15 @@ Banner Usage
 
 ...
 
+// if not passing in any params:
+TapItRequest *request = [TapItRequest requestWithAdZone:@"YOUR ZONE ID"];
+
+// --OR--
+
+// for test mode
+NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"test", @"mode", nil];
 TapItRequest *request = [TapItRequest requestWithAdZone:@"YOUR ZONE ID" andCustomParameters:params];
+
 self.tapitAd.delegate = self; // notify me of the banner ad's state changes
 [self.tapitAd startServingAdsForRequest:request];
 
