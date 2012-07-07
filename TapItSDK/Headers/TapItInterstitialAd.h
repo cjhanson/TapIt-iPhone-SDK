@@ -12,17 +12,18 @@
 
 @class TapItRequest;
 
-@interface TapItInterstitialAd : NSObject
+@interface TapItInterstitialAd : NSObject <TapItInterstitialAdDelegate>
 
 @property (assign, nonatomic) id<TapItInterstitialAdDelegate> delegate;
 
-@property (assign) TapItInterstitialControlType controlType;
-@property (assign) TapItAdType allowedAdTypes;
+@property (assign, nonatomic) BOOL animated;
+@property (assign, nonatomic) TapItInterstitialControlType controlType;
+@property (assign, nonatomic) TapItAdType allowedAdTypes;
 @property (readonly) BOOL loaded;
 
 - (BOOL)loadInterstitialForRequest:(TapItRequest *)request;
 
 - (void)presentFromViewController:(UIViewController *)contoller;
-- (void)presentInView:(UIView *)view;
+//- (void)presentInView:(UIView *)view;
 
 @end

@@ -6,6 +6,10 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+/**
+ Responsible for passing a request on to the server, parsing the response, and deciding which type of AdView object to instantiate
+ */
+
 #import "TapItAdManager.h"
 #import "TapItRequest.h"
 #import "TapItAppTracker.h"
@@ -19,7 +23,7 @@
 @end
 
 @interface TapItAdManager () {
-    NSTimer *timer;
+//    NSTimer *timer;
 }
 
     - (void)processServerResponse;
@@ -51,7 +55,6 @@
     // generate a url form params
     self.currentRequest = request;
     [delegate willLoadAdWithRequest:self.currentRequest]; 
-//    NSLog(@"Requesting Ad: %@", self.currentRequest);
     self.currentConnection = [NSURLConnection connectionWithRequest:[self.currentRequest getURLRequest] delegate:self];
     if (self.currentConnection) {
         connectionData = [[NSMutableData data] retain];
@@ -64,7 +67,6 @@
 - (NSURLRequest *)connection: (NSURLConnection *)inConnection
              willSendRequest: (NSURLRequest *)inRequest
             redirectResponse: (NSURLResponse *)inRedirectResponse {
-//    NSLog(@"inRequest: %@, inRedirectResponse: %@", inRequest, inRedirectResponse);
     return inRequest;
 }
 
@@ -74,8 +76,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSString* rawResults = [[NSString alloc] initWithData:connectionData encoding:NSASCIIStringEncoding];
-//    NSLog(@"Got this data: %@", rawResults);
-    
+
     self.currentRequest.rawResults = rawResults;
     [rawResults release];
         
@@ -90,7 +91,6 @@
     NSError *error = nil;
     NSDictionary *deserializedData = [self.currentRequest.rawResults objectFromJSONStringWithParseOptions:JKParseOptionStrict error:&error];
     if (error) {
-        NSLog(@"JSON parse failed: %@", error);
         NSString *errStr;
         if (!self.currentRequest.rawResults) {
             errStr = @"Server returned an empty response";
@@ -104,9 +104,10 @@
         [delegate adView:nil didFailToReceiveAdWithError:error];
         return;
     }
+//    NSLog(@"JSON Data: %@", deserializedData);
     NSString *errorMsg = [deserializedData objectForKey:@"error"];
     if (errorMsg) {
-        NSLog(@"Server Returned JSON error: %@", errorMsg);
+//        NSLog(@"Server Returned JSON error: %@", errorMsg);
         NSDictionary *details = [NSDictionary dictionaryWithObject:errorMsg forKey:NSLocalizedDescriptionKey];
         NSError *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:400 userInfo:details];
         [delegate adView:nil didFailToReceiveAdWithError:error];
@@ -117,18 +118,20 @@
     int height = [adHeight intValue];
     NSString *adWidth = [deserializedData objectForKey:@"adWidth"];
     int width = [adWidth intValue];
-//    NSLog(@"Ad dimentions: %@, %@ (%@)", adHeight, adWidth, adType);
 
     // generate an adView based on json object
     TapItAdView *adView;
     if ([adType isEqualToString:@"banner"] || 
-        [adType isEqualToString:@"html"]) {
+        [adType isEqualToString:@"html"] ||
+        [adType isEqualToString:@"text"]) {
         adView = [[TapItAdView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    } else if ([adType isEqualToString:@"offerwall"]) {
-        adView = nil;
-    }
-    else if ([adType isEqualToString:@"video"]) {
-        adView = nil;
+//    } else if ([adType isEqualToString:@"offerwall"]) {
+//        //TODO: implement me!
+//        adView = nil;
+//    }
+//    else if ([adType isEqualToString:@"video"]) {
+//        //TODO: implement me!
+//        adView = nil;
     }
     else {
         NSString *errStr = [NSString stringWithFormat:@"Unsupported ad type: %@ (%@)", adType, self.currentRequest.rawResults];
@@ -200,8 +203,6 @@
 
 
 - (void)cancelAdRequests {
-//    [self stopTimer];
-    
     if (currentConnection) {
         [currentConnection cancel];
         [currentConnection release], currentConnection = nil;

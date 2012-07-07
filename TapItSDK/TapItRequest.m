@@ -18,7 +18,7 @@
 @property (retain, nonatomic) NSMutableDictionary *parameters;
 @property (retain, nonatomic) NSString *rawResults;
 
-+(NSArray *)allowedServerVariables; //TODO probably needs to be moved to bannerview/interstitialcontroller
++(NSArray *)allowedServerVariables; //TODO probably needs to be moved to bannerview/interstitialcontroller to allow for different acceptable params for each
 
 - (NSURLRequest *)getURLRequest;
 
@@ -26,7 +26,7 @@
 
 @implementation TapItRequest
 
-@synthesize adZone, parameters, rawResults;
+@synthesize adZone, parameters, rawResults, locationPrecision;
 
 
 + (TapItRequest *)requestWithAdZone:(NSString *)zone {
@@ -51,13 +51,14 @@
 }
 
 - (NSURLRequest *)getURLRequest {
-    //TODO add in missing required fields and filter out invalid params
     [self setDefaultParams];
     NSString *urlStr = [NSString stringWithFormat:@"%@?%@",
                         TAPIT_AD_SERVER_URL,
                         [self.parameters queryStringWithAllowedKeys:[TapItRequest allowedServerVariables]]
                         ];
-//    NSLog(@"%@", urlStr);
+#ifdef DEBUG
+    NSLog(@"TapIt Request: %@", urlStr);
+#endif
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *req = [[[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLCacheStorageNotAllowed timeoutInterval:30.0] autorelease];
     return req;
@@ -81,11 +82,33 @@
                                   @"long",
                                   @"adtype",
                                   @"cid",
+                                  @"client",
+                                  @"version",
+                                  @"connection_speed",
                                   //TODO finish this list...
                                   nil] retain];
     }
     
     return allowedServerVariables;
+}
+
+#pragma mark -
+#pragma mark geotargeting code
+
+- (void)updateLocation:(CLLocation *)location {
+    // update the request object so that the server gets the new location for the next ad request
+	static NSNumberFormatter *formatter = nil;
+	if (!formatter) {
+        formatter = [[NSNumberFormatter alloc] init];
+    }
+    
+    NSNumber *lat = [NSNumber numberWithFloat:location.coordinate.latitude];
+	NSNumber *lon = [NSNumber numberWithFloat:location.coordinate.longitude];
+    
+	[formatter setMaximumFractionDigits:self.locationPrecision];
+    
+    [self setCustomParameter:lat forKey:@"lat"];
+    [self setCustomParameter:lon forKey:@"long"];
 }
 
 #pragma mark -
@@ -108,14 +131,16 @@
 }
 
 - (void)setDefaultParams {
+    TapItAppTracker *tracker = [TapItAppTracker sharedAppTracker];
+    NSInteger connType = [tracker networkConnectionType];
+
     [self setCustomParameter:self.adZone forKey:@"zone"];
     [self setCustomParameter:@"json" forKey:@"format"];
-    TapItAppTracker *tracker = [TapItAppTracker sharedAppTracker];
     [self setCustomParameter:[tracker deviceUDID] forKey:@"udid"];
     [self setCustomParameter:[tracker userAgent] forKey:@"ua"];
-    // location (if enabled)
-    // connection speed
-    // 
+    [self setCustomParameter:TAPIT_VERSION forKey:@"version"];
+    [self setCustomParameter:@"iOS-SDK" forKey:@"client"];
+    [self setCustomParameter:[NSString stringWithFormat:@"%d", connType] forKey:@"connection_speed"];
 }
 
 -(void)dealloc {

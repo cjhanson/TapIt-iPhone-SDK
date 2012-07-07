@@ -62,26 +62,30 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"adManager: webViewDidFinishLoad");
     self.isLoaded = YES;
     [self.tapitDelegate didLoadAdView:self];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    NSLog(@"webView:didFailLoadWithError: %@", error);
+    // Ignore NSURLErrorDomain error -999.
+    if (error.code == NSURLErrorCancelled) {
+        return;   
+    }
+    
+    // Ignore "Fame Load Interrupted" errors. Seen after app store links.
+    if (error.code == 102 && [error.domain isEqual:@"WebKitErrorDomain"]) {
+        return; 
+    }
+
     [self.tapitDelegate adView:self didFailToReceiveAdWithError:error];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-//    NSLog(@"webView trying to load url: %@", request.URL);
-    
     if (!self.isLoaded) {
         // first time loading, let the ad load
         return YES;
     }
     else {
-        
-        
         if (!([request.URL.absoluteString hasPrefix:@"http://"] || [request.URL.absoluteString hasPrefix:@"https://"])) {
             if ([[UIApplication sharedApplication] canOpenURL:request.URL])
             {
@@ -94,52 +98,10 @@
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
         BOOL shouldLeaveApp = NO; //TODO: figure how to answer this correctly, while taking into account redirects...
         BOOL shouldLoad = [self.tapitDelegate adActionShouldBegin:request.URL willLeaveApplication:shouldLeaveApp];
         return shouldLoad;
     }
-    
-//    if (!self.isLoaded) {
-//        // first time loading, let the ad load
-//        return YES;
-//    }
-//    else {
-//        NSLog(@"Trying to load %@", request.URL);
-//        BOOL shouldLeaveApp = NO;
-//        if ([[request.URL scheme] isEqualToString:@"itms-apps"]) {
-//            NSLog(@"found an app store link... load it externally");
-//            shouldLeaveApp = YES;
-//        }
-//
-//        BOOL shouldOpen = [self.tapitDelegate adActionShouldBegin:self willLeaveApplication:shouldLeaveApp];
-//
-//        if (shouldLeaveApp && shouldOpen) {
-//            NSLog(@"Loading app-store");
-//            [webView stopLoading];
-//            
-//            if ([[UIApplication sharedApplication] canOpenURL:request.URL])
-//            {
-//                [[UIApplication sharedApplication] openURL:request.URL];
-//                return NO;
-//            }
-//            else {
-//                NSLog(@"OS says it can't handle request scheme: %@", request.URL);
-//            }
-//            return NO;
-//        } else {
-//            NSLog(@"loading via internal browser");
-//            return shouldOpen;
-//        }        
-//    }
 }
 
 - (void)dealloc {

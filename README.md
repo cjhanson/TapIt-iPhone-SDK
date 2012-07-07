@@ -1,17 +1,18 @@
-TapIt-iPhone-SDK
-================
-=======
 TapIt iOS SDK
 =============
 
-Version 2.0 (Development)
-
-**This Software is under construction. Things may change, use at your own risk.**
+Version 2.0 (Beta)
 
 
 
 Usage:
 ======
+Copy the ```/Lib``` and ```/TapItSDK``` folders into your Xcode project.  The following frameworks are required:
+````
+SystemConfiguration.framework
+QuartsCore.framework
+CoreLocation.framework
+````
 
 Banner Usage
 ------------
@@ -38,6 +39,37 @@ self.tapitAd.delegate = self; // notify me of the banner ad's state changes
 [self.tapitAd cancelAds];
 ````
 
+For a complete example, see https://github.com/tapit/TapIt-iPhone-SDK/blob/master/TapIt-iOS-Sample/FirstViewController.m
+
+
+Listen for location updates
+---------------------------
+If you want to allow for geo-targeting, listen for location updates:
+````objective-c
+@property (retain, nonatomic) CLLocationManager *locationManager;
+
+...
+
+// start listening for location updates
+self.locationManager = [[CLLocationManager alloc] init];
+self.locationManager.delegate = self;
+[self.locationManager startMonitoringSignificantLocationChanges];
+
+...
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    // Notify the TapIt! banner when the location changes.  New location will be used the next time an ad is requested
+    [self.tapitAd updateLocation:newLocation];
+}
+
+...
+
+// Stop monitoring location when done to conserve battery life
+[self.locationManager stopMonitoringSignificantLocationChanges];
+````
+
+
+
 Interstitial Usage
 ------------------
 Show modally
@@ -59,6 +91,7 @@ TapItRequest *request = [TapItRequest requestWithAdZone:@"YOUR ZONE ID"];
     [self.interstitialAd presentFromViewController:self];
 }
 ````
+For a complete example, see https://github.com/tapit/TapIt-iPhone-SDK/blob/master/TapIt-iOS-Sample/SecondViewController.m
 
 Include in paged navigation
     
@@ -79,3 +112,5 @@ if( self.interstitialAd.isLoaded ) {
     [self.interstitialAd presentInView:self.view];
 }
 ````
+
+For details on the delegate methods called by the TapIt! iOS SDK, see https://github.com/tapit/TapIt-iPhone-SDK/blob/master/TapItSDK/Headers/TapItAdDelegates.h

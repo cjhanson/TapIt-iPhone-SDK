@@ -195,7 +195,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request 
  navigationType:(UIWebViewNavigationType)navigationType 
 {
-    NSLog(@"AdBrowser->webView:shouldStartLoadWithRequest: %@ (%d)", request, navigationType);
+//    NSLog(@"AdBrowser->webView:shouldStartLoadWithRequest: %@ (%d)", request, navigationType);
 	
 	/* 
 	 * For all links with http:// or https:// scheme, open in our browser UNLESS
@@ -205,8 +205,10 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	{
 		if ([SPECIAL_HOSTS containsObject:request.URL.host])
 		{
-			[self.delegate dismissBrowserController:self animated:NO]; 
+//			[self.delegate dismissBrowserController:self animated:NO];
 			[[UIApplication sharedApplication] openURL:request.URL];
+//            [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+            [self.delegate dismissBrowserController:self];
 			return NO;
 		}
 		else 
@@ -219,8 +221,10 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	{
 		if ([[UIApplication sharedApplication] canOpenURL:request.URL])
 		{
-			[self.delegate dismissBrowserController:self animated:NO]; 
+//			[self.delegate dismissBrowserController:self animated:NO]; 
 			[[UIApplication sharedApplication] openURL:request.URL];
+//            [self.presentingViewController.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+            [self.delegate dismissBrowserController:self];
 			return NO;
 		}
 	}
@@ -229,7 +233,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webViewDidStartLoad:(UIWebView *)webView 
 {
-    NSLog(@"AdBrowser->webViewDidFinishLoad");
+//    NSLog(@"AdBrowser->webViewDidFinishLoad");
 	_refreshButton.enabled = YES;
 	_safariButton.enabled = YES;
 	[_spinner startAnimating];
@@ -237,7 +241,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView 
 {
-    NSLog(@"AdBrowser->webViewDidFinishLoad");
+//    NSLog(@"AdBrowser->webViewDidFinishLoad");
 	_refreshButton.enabled = YES;
 	_safariButton.enabled = YES;	
 	_backButton.enabled = _webView.canGoBack;
@@ -247,16 +251,28 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error 
 {
-    NSLog(@"AdBrowser->webView:didFailLoadWithError: %@", error);
-	[self webViewDidFinishLoad:webView];
+//    NSLog(@"AdBrowser->webView:didFailLoadWithError: %@", error);
+    // Ignore NSURLErrorDomain error -999.
+    if (error.code == NSURLErrorCancelled) return;
+    
+    // Ignore "Fame Load Interrupted" errors. Seen after app store links.
+    if (error.code == 102 && [error.domain isEqual:@"WebKitErrorDomain"]) return;
+    
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(dismissBrowserController:animated:)]) {
+            [self.delegate dismissBrowserController:self animated:NO];
+        }
+    }
+//	[self webViewDidFinishLoad:webView];
 }
+
+
 
 #pragma mark -
 #pragma mark TapIt click tracking redirect code
 
 - (void)processTapItClickTrackingRedirect:(NSURL *)tapitURL
 {
-//    NSLog(@"Handling tapit click tracking hop: %@", tapitURL);
     NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:tapitURL] delegate:self startImmediately:YES];
     [con release];
 }
@@ -264,12 +280,11 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     NSURL *responseURL = [response URL];
     
-    NSLog(@"NSURLConnection handling this url: %@", responseURL);
     if(![responseURL.host hasSuffix:@"c.tapit.com"])
     {
         // not the tracking url, fire the webview request
-        NSLog(@"not the tracking url, firing the webview request");
         self.URL = responseURL;
+        NSLog(@"CANCEL!!!");
         [connection cancel];
         [_webView loadRequest:[NSURLRequest requestWithURL:self.URL]];    
     }

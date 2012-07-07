@@ -16,6 +16,7 @@
 - (NSString *)deviceUDID;
 - (NSString *)userAgent;
 - (CLLocation *)location;
+- (NSInteger)networkConnectionType;
 
 - (void)reportApplicationOpen;
 

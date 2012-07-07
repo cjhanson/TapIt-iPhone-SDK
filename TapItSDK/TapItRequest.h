@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface TapItRequest : NSObject
 
+@property (nonatomic, assign) NSUInteger locationPrecision;
+
 + (TapItRequest *)requestWithAdZone:(NSString *)zone;
 + (TapItRequest *)requestWithAdZone:(NSString *)zone andCustomParameters:(NSDictionary *)theParams;
+
+- (void)updateLocation:(CLLocation *)location;
 
 - (id)customParameterForKey:(NSString *)key;
 - (id)setCustomParameter:(id)value forKey:(NSString *)key;

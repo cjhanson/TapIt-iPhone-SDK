@@ -28,7 +28,18 @@ enum {
 typedef NSUInteger TapItInterstitialControlType;
 
 
+enum {
+    TapItBannerHideNone,
+    TapItBannerHideLeft,
+    TapItBannerHideRight,
+    TapItBannerHideUp,
+    TapItBannerHideDown,
+};
+typedef NSUInteger TapItBannerHideDirection;
+
 #define TAPIT_PARAM_KEY_BANNER_ROTATE_INTERVAL @"RotateBannerInterval"
 #define TAPIT_PARAM_KEY_BANNER_ERROR_TIMEOUT_INTERVAL @"ErrorRetryInterval"
+
+#define TapItDefaultLocationPrecision 6
 
 #endif

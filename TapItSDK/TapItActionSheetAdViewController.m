@@ -6,15 +6,16 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "TapItFullScreenAdViewController.h"
+#import "TapItAdBrowserController.h"
+#import "TapItActionSheetAdViewController.h"
 #import "TapItAdView.h"
 
-@interface TapItFullScreenAdViewController ()
+@interface TapItActionSheetAdViewController () <TapItAdBrowserControllerDelegate>
 
 @end
 
-@implementation TapItFullScreenAdViewController
-@synthesize adView, actionSheet, glassView;
+@implementation TapItActionSheetAdViewController
+@synthesize adView, actionSheet, glassView, tappedURL, tapitDelegate, animated;
 
 - (id)init
 {
@@ -26,34 +27,44 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"actionSheet taped: %d", buttonIndex);
     switch (buttonIndex) {
         case 0:
             // call to action tapped
-            ;
-            NSString *clickURL = [self.adView.data objectForKey:@"clickurl"];
-            NSLog(@"clickURL: %@", clickURL);
-            NSURL *url = [NSURL URLWithString:clickURL];
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            [adView loadRequest:request];
-            [self dismissModalViewControllerAnimated:YES];
+            ; // complier dies if this isn't here for some reason...
+            BOOL shouldLoad = self.tappedURL ? YES : NO;
+            if (shouldLoad && self.tapitDelegate) {
+                if ([self.tapitDelegate respondsToSelector:@selector(tapitInterstitialAdActionDidFinish:)]) {
+                    shouldLoad = [self.tapitDelegate tapitInterstitialAdActionShouldBegin:nil willLeaveApplication:NO];
+                }
+            }
+            if (shouldLoad) {
+                [self openURLInFullscreenBrowser:self.tappedURL];
+            }
+            else {
+                [self dismissModalViewControllerAnimated:self.animated];
+            }
             break;
         
         case 1:
         default:
             // skip tapped
-            [self dismissModalViewControllerAnimated:YES];
+            [self dismissModalViewControllerAnimated:self.animated];
+            [self.tapitDelegate tapitInterstitialAdDidUnload:nil];
             break;
     }
 }
 
+#pragma mark -
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.adView setCenter:self.view.center];
-    [self.view addSubview:(UIView *)self.adView];
     self.glassView = [[[UIView alloc] initWithFrame:self.view.frame] autorelease];
     [self.view addSubview:self.glassView];
+
+    
+    [self.adView setCenter:self.view.center];
+    [self.view addSubview:(UIView *)self.adView];
     self.view.backgroundColor = [UIColor blackColor];
     
     UITapGestureRecognizer *singleFingerTap = 
@@ -77,9 +88,8 @@
 
 - (void)glassTapped:(UITapGestureRecognizer *)recognizer
 {
-//    CGPoint location = [recognizer locationInView:[recognizer.view superview]];
     // user can tap anywhere
-    NSLog(@"Glass Tapped!");
+    self.tappedURL = [self.adView.data objectForKey:@"clickurl"];
     [self.actionSheet showInView:self.view];
 }
 
@@ -96,9 +106,19 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    self.tappedURL = request.URL;
+    [self.actionSheet showInView:self.view];
+    return NO;
+}
+
 - (void)dealloc
 {
     self.adView = nil;
+    self.actionSheet = nil;
+    self.glassView = nil;
+    self.tappedURL = nil;
+    self.tapitDelegate = nil;
     [super dealloc];
 }
 @end

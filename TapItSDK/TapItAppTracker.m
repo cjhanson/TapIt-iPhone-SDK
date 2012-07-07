@@ -9,6 +9,7 @@
 #import "TapItPrivateConstants.h"
 #import "TapItAppTracker.h"
 #import "OpenUDID.h"
+#import "Reachability.h"
 
 @interface TapItAppTracker ()
     - (void)reportApplicationOpenInBackground;
@@ -51,11 +52,14 @@
     return nil;
 }
 
-- (int)networkConnectionType {
-    // cell, 4g, wifi, etc...
-    return 0;
+/**
+ 0 - low speed network
+ 1 - Wifi network
+ */
+- (NSInteger)networkConnectionType {
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    return reachability.isReachableViaWiFi;
 }
-
 
 - (void)reportApplicationOpenInBackground {
     @autoreleasepool {
@@ -68,7 +72,7 @@
         if (isNewInstall){
             NSString *appId = [[NSBundle mainBundle] bundleIdentifier];
             NSString *udid = [self deviceUDID];
-            NSString *ua = @"";
+            NSString *ua = [self userAgent];
             
             NSMutableString *reportUrlString = [NSMutableString stringWithFormat:@"%@/adconvert.php?appid=%@&udid=%@",
                                                 TAPIT_REPORTING_SERVER_URL,
@@ -83,14 +87,12 @@
 
             unsigned int tries = 0;
             while (tries < 5) {
-                NSLog(@"Attempting to report app install: %@", reportUrlString);
                 NSURLResponse *response;
                 NSError *error = nil;
 
                 [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
                 if ((!error) && ([(NSHTTPURLResponse *)response statusCode] == 200)) {
                     [fileManager createFileAtPath:appInstalledLogPath contents:nil attributes:nil];
-                    NSLog(@"Installation report successfully sent");
                     
                     break;
                 }

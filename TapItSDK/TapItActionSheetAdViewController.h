@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TapItInterstitialAdViewController.h"
 
 @class TapItAdView;
 
-@interface TapItFullScreenAdViewController : UINavigationController <UIActionSheetDelegate>
+@interface TapItActionSheetAdViewController : TapItInterstitialAdViewController {
+}
 
-@property (retain, nonatomic) TapItAdView *adView; //TODO support video
 @property (retain, nonatomic) UIActionSheet *actionSheet;
 @property (retain, nonatomic) UIView *glassView;
+@property (retain, nonatomic) NSURL *tappedURL;
 
 @end

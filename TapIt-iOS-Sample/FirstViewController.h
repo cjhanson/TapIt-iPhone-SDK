@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 #import "TapItAdDelegates.h"
 
 @class TapItBannerAdView;
 
-@interface FirstViewController : UIViewController <TapItBannerAdViewDelegate> {
+@interface FirstViewController : UIViewController <TapItBannerAdViewDelegate, CLLocationManagerDelegate> {
     IBOutlet TapItBannerAdView *tapitAd;
 }
+
+@property (retain, nonatomic) CLLocationManager *locationManager;
+
 @end

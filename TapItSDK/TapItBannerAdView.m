@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "TapItBannerAdView.h"
 #import "TapitAdView.h"
 #import "TapItAppTracker.h"
@@ -28,7 +30,8 @@
 - (void)openURLInFullscreenBrowser:(NSURL *)url;
 - (UIViewAnimationTransition)getRandomTransition;
 
-- (void)setFrameOffscreen;
+//- (void)setFrameOffscreen;
+- (IBAction)hide;
 - (void)startBannerRotationTimerForNormalOrError:(BOOL)isError; //TODO make this read better
 
 @end
@@ -36,11 +39,12 @@
 
 @implementation TapItBannerAdView
 
-@synthesize originalFrame, adView, adRequest, adManager, animated, delegate;
+@synthesize originalFrame, adView, adRequest, adManager, animated, delegate, hideDirection;
 
 - (void)commonInit {
     self.originalFrame = [self frame];
-    [self setFrameOffscreen]; // hide the ad view until we have an ad to place in it
+    self.hideDirection = TapItBannerHideNone;
+    [self hide]; // hide the ad view until we have an ad to place in it
     self.animated = YES; //default value
     self.adManager = [[[TapItAdManager alloc] init] autorelease];
     self.adManager.delegate = self;
@@ -69,20 +73,6 @@
     isServingAds = YES;
     return YES;
 }
-
-- (void)moveFrameOnscreen {
-    if (self.animated) {
-        //TODO implement me!
-        // animate move
-    }
-    else {
-        NSLog(@"moveFrameOnscreen");
-        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-        [self repositionToInterfaceOrientation:orientation];
-//        [self setFrame:originalFrame];
-    }
-}
-
 
 - (void)repositionToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     
@@ -115,77 +105,132 @@
     }
 }
 
-- (void)setFrameOffscreen {
-    //TODO implement me!
-    // move the add offscreen to where we can animate it in smoothly
+- (CGRect)getHiddenFrameForDirection:(TapItBannerHideDirection)direction {
+    //TODO: Auto direction selection based on ad positioning
+    CGRect hiddenFrame = {{0,0}, self.frame.size};
+    switch (direction) {
+        case TapItBannerHideLeft:
+            hiddenFrame.origin.x = - hiddenFrame.size.width;
+            break;
+            
+        case TapItBannerHideRight:
+            hiddenFrame.origin.x = hiddenFrame.size.width;
+            break;
+            
+        case TapItBannerHideUp:
+            hiddenFrame.origin.y = - hiddenFrame.size.height;
+            break;
+            
+        case TapItBannerHideDown:
+            hiddenFrame.origin.y = hiddenFrame.size.height;
+            break;
+        case TapItBannerHideNone:
+        default:
+            break;
+    }
     
-    // figure out which edge we're attached to
-    // do the move, taking into account the animated property
+    return hiddenFrame;
+}
+
+- (IBAction)hide {
+    if (!self.adView) {
+        // no ad, hide the container
+        self.alpha = 0.0;
+        return;
+    }
+    
+    CGRect avFrame = [self getHiddenFrameForDirection:self.hideDirection];
     if (self.animated) {
-        // animate the move
+        // mask the ad area so we can slide it away
+        // mask should be reset here, just in case the ad size changes
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.adView.frame.size.width, self.adView.frame.size.height)];
+        maskLayer.path = path.CGPath;
+        self.layer.mask = maskLayer;
+        
+        UIViewAnimationTransition trans = UIViewAnimationTransitionNone;
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:trans
+                         animations:^{
+                             if (self.hideDirection == TapItBannerHideNone) {
+                                 self.alpha = 0.0;
+                             }
+                             self.adView.frame = avFrame;
+                         }
+                         completion:^(BOOL finished){ 
+                             self.alpha = 0.0;
+                         }
+         ];
     }
     else {
         // just move it
-        [self setFrame:CGRectZero];
+        self.adView.frame = avFrame;
+        self.alpha = 0.0;
     }
 }
-
 #pragma mark -
 #pragma mark TapItAdManagerDelegate methods
 
 - (void)willLoadAdWithRequest:(TapItRequest *)request {
-    if ([delegate respondsToSelector:@selector(tapitBannerAdViewWillLoadAd:)]) {
-        [delegate tapitBannerAdViewWillLoadAd:self];
+    if ([self.delegate respondsToSelector:@selector(tapitBannerAdViewWillLoadAd:)]) {
+        [self.delegate tapitBannerAdViewWillLoadAd:self];
     }
 }
 
 //TODO: move animation code into a more appropriate place
 //TODO: implement more transitions such as slide, fade, etc...
 - (void)didLoadAdView:(TapItAdView *)theAdView {
-//    NSLog(@"adView frame: %@", adView.frame);
     TapItAdView *oldAd = [self.adView retain];
+    self.alpha = 1.0;
     self.adView = theAdView;
     
     if (self.animated) {
-        UIViewAnimationTransition trans = (nil != self.adView ? [self getRandomTransition] : UIViewAnimationTransitionCurlDown);
-        [UIView animateWithDuration:1 animations:^{
-                                        [UIView setAnimationTransition:trans forView:self cache:YES];
-                                        [self addSubview:self.adView];
-                                      }
-                                      completion:^(BOOL finished){ 
-                                          [oldAd removeFromSuperview];
-                                      }
-        ];
+//        // mask the ad area so we can slide it away
+//        // mask should be reset here, just in case the ad size changes
+//        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+//        UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.adView.frame.size.width, self.adView.frame.size.height)
+//        maskLayer.path = path.CGPath;
+//        self.layer.mask = maskLayer;
+
+        UIViewAnimationTransition trans = UIViewAnimationTransitionCurlDown; //(nil != self.adView ? [self getRandomTransition] : UIViewAnima
+        [UIView animateWithDuration:1
+                              delay:0.0
+                            options:UIViewAnimationOptionTransitionNone
+                         animations:^{
+                            [UIView setAnimationTransition:trans forView:self cache:YES];
+                            [self addSubview:self.adView];
+                         }
+                         completion:^(BOOL finished){ 
+                             [oldAd removeFromSuperview];
+                         }
+         ];
     }
     else {
         [self addSubview:self.adView];
         [oldAd removeFromSuperview];
     }
     
-    
-    NSLog(@"animating didReceiveAd!");
-    [self moveFrameOnscreen];
-
     [self startBannerRotationTimerForNormalOrError:NO];
     
-    if ([delegate respondsToSelector:@selector(tapitBannerAdViewDidLoadAd:)]) {
-        [delegate tapitBannerAdViewDidLoadAd:self];
+    if ([self.delegate respondsToSelector:@selector(tapitBannerAdViewDidLoadAd:)]) {
+        [self.delegate tapitBannerAdViewDidLoadAd:self];
     }
     
     [oldAd release];
 }
 
 - (void)adView:(TapItAdView *)adView didFailToReceiveAdWithError:(NSError*)error {
-    NSLog(@"ERRRRRRRRRR from bannerview");
-    if ([delegate respondsToSelector:@selector(adView:didFailToReceiveAdWithError:)]) {
-        [delegate tapitBannerAdView:self didFailToReceiveAdWithError:error];
-    }    
+    if ([self.delegate respondsToSelector:@selector(adView:didFailToReceiveAdWithError:)]) {
+        [self.delegate tapitBannerAdView:self didFailToReceiveAdWithError:error];
+    }
+    [self hide];
     [self startBannerRotationTimerForNormalOrError:YES];
 }
 
 - (BOOL)adActionShouldBegin:(NSURL *)actionUrl willLeaveApplication:(BOOL)willLeave {
-    if ([delegate respondsToSelector:@selector(tapitBannerAdViewActionShouldBegin:willLeaveApplication:)]) {
-        BOOL shouldLoad = [delegate tapitBannerAdViewActionShouldBegin:self willLeaveApplication:willLeave];
+    if ([self.delegate respondsToSelector:@selector(tapitBannerAdViewActionShouldBegin:willLeaveApplication:)]) {
+        BOOL shouldLoad = [self.delegate tapitBannerAdViewActionShouldBegin:self willLeaveApplication:willLeave];
         if (shouldLoad) {
             [self openURLInFullscreenBrowser:actionUrl];
         }
@@ -197,8 +242,8 @@
 }
 
 - (void)adViewActionDidFinish:(TapItAdView *)adView {
-    if ([delegate respondsToSelector:@selector(tapitBannerAdViewActionDidFinish:)]) {
-        [delegate tapitBannerAdViewActionDidFinish:self];
+    if ([self.delegate respondsToSelector:@selector(tapitBannerAdViewActionDidFinish:)]) {
+        [self.delegate tapitBannerAdViewActionDidFinish:self];
     }
 }
 
@@ -258,12 +303,10 @@
 
 - (void)timerElapsed {
     // fire off another ad request...
-    NSLog(@"timerElapsed");
     [self requestAnotherAd];
 }
 
 - (void)stopTimer {
-    NSLog(@"Stop Timer");
     [timer invalidate];
     [timer release], timer = nil;
 }
@@ -309,10 +352,28 @@
 }
 
 - (void)dismissBrowserController:(TapItAdBrowserController *)browserController animated:(BOOL)isAnimated {
-	[delegate tapitBannerAdViewActionDidFinish:self];
+    [browserController dismissModalViewControllerAnimated:YES];
+	[self.delegate tapitBannerAdViewActionDidFinish:self];
     [self requestAnotherAd];
 }
 
+#pragma mark -
+#pragma mark geotargeting code
+- (NSUInteger)locationPrecision {
+    return self.adRequest.locationPrecision;
+}
+
+- (void)setLocationPrecision:(NSUInteger)locationPrecision {
+    if (locationPrecision != self.adRequest.locationPrecision) {
+        self.adRequest.locationPrecision = locationPrecision;
+    }
+}
+
+- (void)updateLocation:(CLLocation *)location {
+    [self.adRequest updateLocation:location];
+}
+
+#pragma mark -
 
 - (void)dealloc {
     [self cancelAds];

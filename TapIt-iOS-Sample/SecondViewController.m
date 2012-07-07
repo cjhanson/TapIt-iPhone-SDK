@@ -9,6 +9,8 @@
 #import "SecondViewController.h"
 #import "TapIt.h"
 
+#define ZONE_ID @"3644"
+
 @interface SecondViewController ()
 
 @end
@@ -48,7 +50,6 @@
 
 - (IBAction)showInterstitial:(id)sender {
     NSLog(@"Show button pressed");
-//    [self.interstitialAd presentInView:self.view];
     [self.interstitialAd presentFromViewController:self];
 }
 
@@ -56,13 +57,13 @@
     NSLog(@"Load button pressed");
     [self updateUIWithState:StateLoading];
     self.interstitialAd = [[[TapItInterstitialAd alloc] init] autorelease];
+    self.interstitialAd.controlType = TapItLightboxControlType; // TapItActionSheetControlType;
     self.interstitialAd.delegate = self;
-//    [self.interstitialAd setCustomParameter:@"test" forKey:@"mode"];
-//    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:  
+    self.interstitialAd.animated = YES;
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:  
 //                            @"test", @"mode", 
-//                            nil];
-//    TapItRequest *request = [TapItRequest requestWithZone:@"3644" andCustomParameters:params];
-    TapItRequest *request = [TapItRequest requestWithAdZone:@"3644"];
+                            nil];
+    TapItRequest *request = [TapItRequest requestWithAdZone:ZONE_ID andCustomParameters:params];
     [self.interstitialAd loadInterstitialForRequest:request];
 }
 
@@ -106,10 +107,10 @@
 #pragma mark -
 
 - (void)dealloc {
-    [loadButton release];
-    [showButton release];
-    [activityIndicator release];
-    [interstitialAd release];
+    self.loadButton = nil;
+    self.showButton = nil;
+    self.activityIndicator = nil;
+    self.interstitialAd = nil;
     [super dealloc];
 }
 @end

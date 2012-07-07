@@ -9,11 +9,16 @@
 #import "FirstViewController.h"
 #import "TapIt.h"
 
+#define ZONE_ID @"3644"
+
+
 @interface FirstViewController ()
 
 @end
 
 @implementation FirstViewController
+
+@synthesize locationManager;
 
 - (void)viewWillAppear:(BOOL)animated {
 }
@@ -21,21 +26,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.locationManager = [[[CLLocationManager alloc] init] autorelease];
+    self.locationManager.delegate = self;
+    [self.locationManager startMonitoringSignificantLocationChanges];
+    
     tapitAd.delegate = self;
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:  
 //                                @"test", @"mode", 
-                                @"1", @"cid",
-                                [NSNumber numberWithInt:15], TAPIT_PARAM_KEY_BANNER_ROTATE_INTERVAL, 
-//                                [NSNumber numberWithInt:15], TAPIT_PARAM_KEY_BANNER_ERROR_TIMEOUT_INTERVAL, 
                                 nil];
-    TapItRequest *request = [TapItRequest requestWithAdZone:@"3644" andCustomParameters:params];
-//    tapitAd.animated = NO;
+    TapItRequest *request = [TapItRequest requestWithAdZone:ZONE_ID andCustomParameters:params];
+    [request updateLocation:self.locationManager.location];
     [tapitAd startServingAdsForRequest:request];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [self.locationManager stopMonitoringSignificantLocationChanges];
     // Release any retained subviews of the main view.
 }
 
@@ -83,6 +91,25 @@
 - (void)tapitBannerAdViewActionDidFinish:(TapItBannerAdView *)bannerView {
     NSLog(@"Banner is done covering your app, back to normal!");
     // resume normal app functions
+}
+
+#pragma mark -
+#pragma mark CoreLocation delegate methods
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    [tapitAd updateLocation:newLocation];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    NSLog(@"locationManager:didFailWithError:");
+}
+
+#pragma mark -
+
+- (void)dealloc {
+    [self.locationManager stopMonitoringSignificantLocationChanges];
+    self.locationManager = nil;
+    [super dealloc];
 }
 
 @end

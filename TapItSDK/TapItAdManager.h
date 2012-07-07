@@ -23,14 +23,7 @@
 @property (retain, nonatomic) NSURLConnection *currentConnection;
 @property (retain, nonatomic) TapItRequest *currentRequest;
 
-
 - (void)fireAdRequest:(TapItRequest *)request;
-
-
-////TODO timer code shouldn't be here...
-//- (void)startTimerForSeconds:(NSTimeInterval)seconds;
-//- (void)stopTimer;
-
 - (void)cancelAdRequests;
 
 @end
