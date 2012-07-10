@@ -176,6 +176,7 @@ static NSArray *BROWSER_SCHEMES, *SPECIAL_HOSTS;
 	{
 		// Open in Safari.
 		[[UIApplication sharedApplication] openURL:_webView.request.URL];
+        [self.delegate dismissBrowserController:self]; //TODO notify delegate that we're leaving the app
 	}
 }
 

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @interface TapItAppTracker : NSObject
 
@@ -17,6 +19,7 @@
 - (NSString *)userAgent;
 - (CLLocation *)location;
 - (NSInteger)networkConnectionType;
+- (NSString *)carrier;
 
 - (void)reportApplicationOpen;
 

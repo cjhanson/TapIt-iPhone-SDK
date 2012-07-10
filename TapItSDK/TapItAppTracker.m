@@ -48,6 +48,20 @@
     
 }
 
+- (NSString *)carrier {
+//    const CLLocationAccuracy * ptr = &kCLLocationAccuracyBestForNavigation;
+//    BOOL frameworkSupports = (ptr != NULL);
+    NSLog(@"GETTING CARRIER");
+    CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *c = [netinfo subscriberCellularProvider];
+    NSString *cName = c.carrierName;
+    if (!cName) {
+        cName = @"unkown";
+    }
+    [netinfo release];
+    return cName;
+}
+
 - (CLLocation *)location {
     return nil;
 }

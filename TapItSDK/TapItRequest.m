@@ -82,6 +82,7 @@
                                   @"long",
                                   @"adtype",
                                   @"cid",
+                                  @"carrier",
                                   @"client",
                                   @"version",
                                   @"connection_speed",
@@ -137,10 +138,11 @@
     [self setCustomParameter:self.adZone forKey:@"zone"];
     [self setCustomParameter:@"json" forKey:@"format"];
     [self setCustomParameter:[tracker deviceUDID] forKey:@"udid"];
-    [self setCustomParameter:[tracker userAgent] forKey:@"ua"];
     [self setCustomParameter:TAPIT_VERSION forKey:@"version"];
     [self setCustomParameter:@"iOS-SDK" forKey:@"client"];
     [self setCustomParameter:[NSString stringWithFormat:@"%d", connType] forKey:@"connection_speed"];
+    [self setCustomParameter:[tracker carrier] forKey:@"carrier"];
+    [self setCustomParameter:[tracker userAgent] forKey:@"ua"];
 }
 
 -(void)dealloc {

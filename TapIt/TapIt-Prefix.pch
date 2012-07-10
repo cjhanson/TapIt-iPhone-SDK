@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'TapIt' target in the 'TapIt' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

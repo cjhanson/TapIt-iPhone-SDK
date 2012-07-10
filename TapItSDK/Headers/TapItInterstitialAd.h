@@ -11,6 +11,7 @@
 #import "TapItConstants.h"
 
 @class TapItRequest;
+@class UIViewController;
 
 @interface TapItInterstitialAd : NSObject <TapItInterstitialAdDelegate>
 

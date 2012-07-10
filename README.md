@@ -12,6 +12,7 @@ Copy the ```/Lib``` and ```/TapItSDK``` folders into your Xcode project.  The fo
 SystemConfiguration.framework
 QuartsCore.framework
 CoreLocation.framework
+CoreTelephony.framework
 ````
 
 Banner Usage
