@@ -36,16 +36,15 @@
 	static NSString *userAgent = nil;
 	
     if (!userAgent) {
-		if(![NSThread isMainThread]){
-			dispatch_sync(dispatch_get_main_queue(), ^{
-				UIWebView *webview = [[UIWebView alloc] init];
-				userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];
-				[webview release];
-			});
-		}else{
+		void (^getUserAgent)(void) = ^{
 			UIWebView *webview = [[UIWebView alloc] init];
 			userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];
 			[webview release];
+		};
+		if(![NSThread isMainThread]){
+			dispatch_sync(dispatch_get_main_queue(), getUserAgent);
+		}else{
+			getUserAgent();
 		}
     }
     return userAgent;
