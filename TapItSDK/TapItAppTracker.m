@@ -36,9 +36,17 @@
 	static NSString *userAgent = nil;
 	
     if (!userAgent) {
-        UIWebView *webview = [[UIWebView alloc] init];
-        userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];  
-        [webview release];
+		if(![NSThread isMainThread]){
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				UIWebView *webview = [[UIWebView alloc] init];
+				userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];
+				[webview release];
+			});
+		}else{
+			UIWebView *webview = [[UIWebView alloc] init];
+			userAgent = [[webview stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"] copy];
+			[webview release];
+		}
     }
     return userAgent;
 }
